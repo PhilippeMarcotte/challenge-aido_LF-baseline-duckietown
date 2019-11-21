@@ -19,6 +19,9 @@ RUN mkdir duckietown
 COPY setup/requirements.txt duckietown
 COPY setup/initial.sh duckietown
 
+COPY simulation/requirements.txt duckietown
+RUN  pip3 install -r duckietown/requirements.txt
+
 COPY setup/run_display.bash duckietown
 RUN chmod u+x duckietown/run_display.bash
 
