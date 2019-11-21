@@ -5,7 +5,7 @@ import numpy as np
 def imgWrapper(state):
     from PIL import Image
 
-    state = np.array(Image.fromarray(state).resize((120, 160, 3)))
+    state = np.array(Image.fromarray(state).resize((120, 160)))
 
     state_lo=np.min(state)
     state_hi=np.max(state)

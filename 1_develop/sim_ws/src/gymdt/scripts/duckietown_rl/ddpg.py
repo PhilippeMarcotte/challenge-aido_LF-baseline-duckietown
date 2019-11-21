@@ -1,6 +1,6 @@
 import functools
 import operator
-from controller_baseline import Controller
+from .controller_baseline import Controller
 
 import numpy as np
 import torch
@@ -190,8 +190,8 @@ class DDPG(object):
 
     def predict(self, state, dist, angle, only_pid=False):
         # just making sure the state has the correct format, otherwise the prediction doesn't work
-        assert state.shape[0] == 3
         state = imgWrapper(state)
+        assert state.shape[0] == 3
         dist = torch.FloatTensor(dist).to(device)
         angle = torch.FloatTensor(angle).to(device)
 

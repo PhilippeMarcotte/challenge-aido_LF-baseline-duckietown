@@ -34,11 +34,11 @@ class ROSAgent(object):
         # Get the vehicle name, which comes in as HOSTNAME
         self.vehicle = os.getenv('HOSTNAME')
 
-        self.ik_action_sub = rospy.Subscriber('/{}/lane_filter_node/lane_pose'.format(
-            self.vehicle), LanePose, self._ik_action_cb)
+        #self.ik_action_sub = rospy.Subscriber('/{}/lane_filter_node/lane_pose'.format(
+        #    self.vehicle), LanePose, self._ik_action_cb)
             # rospy.Subscriber("~lane_pose", LanePose, self.error_reader, queue_size=1)
         # Place holder for the action, which will be read by the agent in solution.py
-        self.action = np.array([0.0, 0.0])
+        self.action = None
         self.updated = True
 
         # Publishes onto the corrected image topic
@@ -56,6 +56,7 @@ class ROSAgent(object):
         self.angle = None
         self.prev_dist = None
         self.prev_angle = None
+        self.total_timesteps = 0
         
         # Initializes the node
         rospy.init_node('GymDuckietown')
@@ -73,12 +74,12 @@ class ROSAgent(object):
 
         self.dist = msg.d
         self.angle = msg.phi
-
+        logging.error("HELLO")
         # Select action randomly or according to policy
         if self.total_timesteps < self.args.start_timesteps:
             action = env.action_space.sample()
         else:
-            action = self.policy.predict(np.array(obs), np.array(dist), np.array(angle),
+            action = self.policy.predict(np.array(self.obs), np.array(self.dist), np.array(self.angle),
             only_pid=total_timesteps-self.args.start_timesteps<self.args.pid_timesteps)
             if self.args.expl_noise != 0:
                 action = (action + np.random.normal(
@@ -124,7 +125,7 @@ if __name__ == '__main__':
     # env = ActionWrapper(env)
     env = DtRewardWrapper(env)
     env = SteeringToWheelVelWrapper(env)
-    env = wrappers.Monitor(env, './gym_results', video_callable=lambda episode_id: True, force=True)
+    #env = wrappers.Monitor(env, './gym_results', video_callable=lambda episode_id: True, force=True)
     ################################################################################
     policy_name = "DDPG"
 
@@ -142,7 +143,8 @@ if __name__ == '__main__':
     if args.save_models and not os.path.exists("./pytorch_models"):
         os.makedirs("./pytorch_models")
 
-    logging.getLogger('gym-duckietown').setLevel(logging.ERROR)
+    logger = logging.getLogger('gym-duckietown')
+    logger.setLevel(logging.INFO)
 
     # Set seeds
     seed(args.seed)
@@ -167,7 +169,16 @@ if __name__ == '__main__':
     done = True
     episode_reward = None
     env_counter = 0
+    obs = env.reset()
+    rospy.logerr("FUCK")
+    sub = rospy.Subscriber('/{}/lane_filter_node/lane_pose'.format(os.getenv('HOSTNAME')), LanePose, rosagent._ik_action_cb)
+    while rosagent.action is None:
+        rosagent.publish_img(obs)
+    sub.unregister()
+    rospy.logerr("HI")
+
     while total_timesteps < args.max_timesteps:
+        rospy.logerr("AAAAH")
         if done:
 
             if total_timesteps != 0:
@@ -189,6 +200,9 @@ if __name__ == '__main__':
             # env.close()
             obs = env.reset()
             rosagent.publish_img(obs)
+            lane_pose = rospy.wait_for_message('/{}/lane_filter_node/lane_pose'.format(
+            os.getenv('HOSTNAME')), LanePose)
+            rosagent._ik_action_cb(lane_pose)
             # env.reset_video_recorder()
             # env = wrappers.Monitor(env, './gym_results', video_callable=lambda episode_id: True, force=True)
             done = False
@@ -199,14 +213,16 @@ if __name__ == '__main__':
         action=rosagent.action
 
         # Perform action
-        new_obs, reward, done, _ = env.step(action)
+        new_obs, reward, done, _ = env.step(action if action is not None else np.array([5.0, 0.0]))
         rosagent.publish_img(new_obs)
         
 
-        time_1=time.time()
-        while not rosagent.callback_processed:
-            time.sleep(0.001)
-        print(time.time()-time_1)
+        lane_pose = rospy.wait_for_message('/{}/lane_filter_node/lane_pose'.format(
+            os.getenv('HOSTNAME')), LanePose)
+        rosagent._ik_action_cb(lane_pose)
+        #while not rosagent.callback_processed:
+        #    time.sleep(0.001)
+        #print(time.time()-time_1)
 
         next_dist = rosagent.dist       # Distance to lane center. Left is negative, right is positive.
         next_angle = rosagent.angle  # Angle from straight, in radians. Left is negative, right is positive.
@@ -218,16 +234,17 @@ if __name__ == '__main__':
         episode_reward += reward
 
         # Store data in replay buffer
-        if first_loop
-        replay_buffer.add(obs, new_obs, action, reward, done_bool,
-         rosagent.prev_dist, rosagent.prev_angle, next_dist, next_angle)
+
+        if rosagent.action is not None:
+            replay_buffer.add(obs, new_obs, action, reward, done_bool,
+            rosagent.prev_dist, rosagent.prev_angle, next_dist, next_angle)
+
+            episode_timesteps += 1
+            total_timesteps += 1
+            rosagent.total_timesteps = total_timesteps
+            timesteps_since_eval += 1
 
         obs = new_obs
-
-        episode_timesteps += 1
-        total_timesteps += 1
-        rosagent.total_timesteps = total_timesteps
-        timesteps_since_eval += 1
 
     # Final evaluation
     evaluations.append(evaluate_policy(env, rosagent.policy, device))
@@ -237,14 +254,3 @@ if __name__ == '__main__':
         rosagent.policy.save(file_name, directory="./pytorch_models")
     np.savez("./pytorch_models/{}.npz".format(file_name),evaluations)
     ################################################################################
-
-    while not rospy.is_shutdown():
-        action = rosagent.action
-        obs, reward, done, _ = env.step(action)
-
-        if done:
-            obs = env.reset()
-
-        rosagent.publish_img(obs)
-        r.sleep()
-

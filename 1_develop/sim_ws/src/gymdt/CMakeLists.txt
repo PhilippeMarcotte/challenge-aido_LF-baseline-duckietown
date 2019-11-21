@@ -47,6 +47,7 @@ add_message_files(
   FILES
   Twist2DStamped.msg
   WheelsCmdStamped.msg
+  LanePose.msg
 )
 
 

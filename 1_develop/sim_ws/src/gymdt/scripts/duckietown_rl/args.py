@@ -2,25 +2,25 @@ import argparse
 
 
 def get_ddpg_args_train():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--seed", default=123, type=int)  # Sets Gym, PyTorch and Numpy seeds
-    parser.add_argument("--start_timesteps", default=0, type=int)  # How many time steps purely random policy is run for
-    parser.add_argument("--eval_freq", default=5e3, type=float)  # How often (time steps) we evaluate
-    parser.add_argument("--max_timesteps", default=1.1e6, type=float)  # Max time steps to run environment for
-    parser.add_argument("--save_models", action="store_true", default=True)  # Whether or not models are saved
-    parser.add_argument("--expl_noise", default=0.1, type=float)  # Std of Gaussian exploration noise
-    parser.add_argument("--batch_size", default=32, type=int)  # Batch size for both actor and critic
-    parser.add_argument("--discount", default=0.99, type=float)  # Discount factor
-    parser.add_argument("--tau", default=0.005, type=float)  # Target network update rate
-    parser.add_argument("--policy_noise", default=0.2, type=float)  # Noise added to target policy during critic update
-    parser.add_argument("--noise_clip", default=0.5, type=float)  # Range to clip target policy noise
-    parser.add_argument("--policy_freq", default=2, type=int)  # Frequency of delayed policy updates
-    parser.add_argument("--env_timesteps", default=500, type=int)  # Frequency of delayed policy updates
-    parser.add_argument("--replay_buffer_max_size", default=10000, type=int)  # Maximum number of steps to keep in the replay buffer
-    parser.add_argument("--pid_timesteps", default=9e4, type=int)
+    args = argparse.Namespace()
+    args.seed = 123  # Sets Gym, PyTorch and Numpy seeds
+    args.start_timesteps = 0  # How many time steps purely random policy is run for
+    args.eval_freq = 5e3  # How often (time steps) we evaluate
+    args.max_timesteps = 1.1e6  # Max time steps to run environment for
+    args.save_models = True  # Whether or not models are saved
+    args.expl_noise = 0.1  # Std of Gaussian exploration noise
+    args.batch_size =32  # Batch size for both actor and critic
+    args.discount = 0.99  # Discount factor
+    args.tau = 0.005  # Target network update rate
+    args.policy_noise = 0.2  # Noise added to target policy during critic update
+    args.noise_clip = 0.5  # Range to clip target policy noise
+    args.policy_freq = 2  # Frequency of delayed policy updates
+    args.env_timesteps = 500  # Frequency of delayed policy updates
+    args.replay_buffer_max_size = 10000  # Maximum number of steps to keep in the replay buffer
+    args.pid_timesteps = 9e4
     
 
-    return parser.parse_args()
+    return args
 
 
 def get_ddpg_args_test():
