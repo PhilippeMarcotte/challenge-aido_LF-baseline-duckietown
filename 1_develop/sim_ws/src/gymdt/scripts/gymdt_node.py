@@ -170,15 +170,10 @@ if __name__ == '__main__':
     episode_reward = None
     env_counter = 0
     obs = env.reset()
-    rospy.logerr("FUCK")
-    sub = rospy.Subscriber('/{}/lane_filter_node/lane_pose'.format(os.getenv('HOSTNAME')), LanePose, rosagent._ik_action_cb)
     while rosagent.action is None:
         rosagent.publish_img(obs)
-    sub.unregister()
-    rospy.logerr("HI")
 
     while total_timesteps < args.max_timesteps:
-        rospy.logerr("AAAAH")
         if done:
 
             if total_timesteps != 0:
@@ -200,9 +195,6 @@ if __name__ == '__main__':
             # env.close()
             obs = env.reset()
             rosagent.publish_img(obs)
-            lane_pose = rospy.wait_for_message('/{}/lane_filter_node/lane_pose'.format(
-            os.getenv('HOSTNAME')), LanePose)
-            rosagent._ik_action_cb(lane_pose)
             # env.reset_video_recorder()
             # env = wrappers.Monitor(env, './gym_results', video_callable=lambda episode_id: True, force=True)
             done = False
@@ -213,13 +205,9 @@ if __name__ == '__main__':
         action=rosagent.action
 
         # Perform action
-        new_obs, reward, done, _ = env.step(action if action is not None else np.array([5.0, 0.0]))
+        new_obs, reward, done, _ = env.step(action if action is not None else np.array([0.0, 0.0]))
         rosagent.publish_img(new_obs)
-        
 
-        lane_pose = rospy.wait_for_message('/{}/lane_filter_node/lane_pose'.format(
-            os.getenv('HOSTNAME')), LanePose)
-        rosagent._ik_action_cb(lane_pose)
         #while not rosagent.callback_processed:
         #    time.sleep(0.001)
         #print(time.time()-time_1)

@@ -19,8 +19,8 @@ RUN mkdir duckietown
 COPY setup/requirements.txt duckietown
 COPY setup/initial.sh duckietown
 
-COPY simulation/requirements.txt duckietown
-RUN  pip3 install -r duckietown/requirements.txt
+COPY simulation/requirements.txt duckietown/requirements_sim.txt
+RUN  pip3 install -r duckietown/requirements_sim.txt
 
 COPY setup/run_display.bash duckietown
 RUN chmod u+x duckietown/run_display.bash
@@ -45,5 +45,18 @@ COPY setup/requirementspy2.txt duckietown
 RUN python -m pip install -r duckietown/requirementspy2.txt
 
 WORKDIR /duckietown
-CMD  rm -f /tmp/.X99-lock &&  ./run_display.bash &&  jupyter-notebook --allow-root --ip="*" --no-browser 
 
+RUN mkdir sim_ws
+COPY sim_ws sim_ws
+
+
+RUN . /opt/ros/melodic/setup.sh && \
+catkin build --workspace sim_ws
+COPY setup/run_display.bash .
+RUN chmod u+x run_display.bash
+
+COPY setup/launch_sim.sh .
+
+RUN chmod u+x launch_sim.sh
+
+CMD  rm -f /tmp/.X99-lock &&  ./run_display.bash &&  jupyter-notebook --allow-root --ip="*" --no-browser 

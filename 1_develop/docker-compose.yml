@@ -8,8 +8,8 @@ services:
         working_dir: /duckietown
         networks:
         - duckietown-docker-net
-#        depends_on:
-#        - "sim"
+        depends_on:
+        - "sim"
         volumes:
         - ./catkin_ws:/duckietown/catkin_ws
         - ./utils:/duckietown/utils
@@ -50,6 +50,7 @@ services:
         networks:
         - duckietown-docker-net
         volumes:
+        - ./sim_ws:/duckietown/sim_ws
         - ./simulation:/duckietown/simulation
         - ./utils:/duckietown/utils        
         environment:

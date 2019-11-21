@@ -47,4 +47,4 @@ COPY setup/launch_sim.sh .
 
 RUN chmod u+x launch_sim.sh
 
-CMD ./launch_sim.sh
+CMD roscore
