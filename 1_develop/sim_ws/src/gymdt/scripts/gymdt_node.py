@@ -34,8 +34,8 @@ class ROSAgent(object):
         # Get the vehicle name, which comes in as HOSTNAME
         self.vehicle = os.getenv('HOSTNAME')
 
-        #self.ik_action_sub = rospy.Subscriber('/{}/lane_filter_node/lane_pose'.format(
-        #    self.vehicle), LanePose, self._ik_action_cb)
+        self.ik_action_sub = rospy.Subscriber('/{}/lane_filter_node/lane_pose'.format(
+            self.vehicle), LanePose, self._ik_action_cb)
             # rospy.Subscriber("~lane_pose", LanePose, self.error_reader, queue_size=1)
         # Place holder for the action, which will be read by the agent in solution.py
         self.action = None
@@ -111,9 +111,10 @@ class ROSAgent(object):
 
         img_msg.format = "jpeg"
         contig = cv2.cvtColor(np.ascontiguousarray(obs), cv2.COLOR_BGR2RGB)
-        img_msg.data = np.array(cv2.imencode('.jpg', contig)[1]).tostring()
+        data = np.array(cv2.imencode('.jpg', contig)[1])
+        img_msg.data = data.tostring()
 
-        self.obs=contig
+        self.obs = data
 
         self.cam_pub.publish(img_msg)
         self._publish_info()
