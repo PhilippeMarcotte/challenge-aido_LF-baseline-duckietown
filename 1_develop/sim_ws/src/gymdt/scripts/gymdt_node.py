@@ -11,6 +11,9 @@ from duckietown_rl.ddpg import DDPG
 from duckietown_rl.args import get_ddpg_args_train
 from duckietown_rl.utils import seed, evaluate_policy, ReplayBuffer 
 from duckietown_rl.wrappers import DtRewardWrapper, ActionWrapper, SteeringToWheelVelWrapper
+from duckietown_rl.object_wrappers import imgWrapper
+
+from collections import deque
 
 # from env import launch_env
 import logging
@@ -28,14 +31,19 @@ import numpy as np
 import os
 import cv2
 
+def seed(seed):
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+
 
 class ROSAgent(object):
-    def __init__(self):
+    def __init__(self, args, action_space):
         # Get the vehicle name, which comes in as HOSTNAME
         self.vehicle = os.getenv('HOSTNAME')
 
-        self.ik_action_sub = rospy.Subscriber('/{}/lane_filter_node/lane_pose'.format(
-            self.vehicle), LanePose, self._ik_action_cb)
+        self.ik_action_sub = rospy.Subscriber('/{}/lane_controller_node/car_cmd'.format(
+            self.vehicle), Twist2DStamped, self._ik_action_cb)
             # rospy.Subscriber("~lane_pose", LanePose, self.error_reader, queue_size=1)
         # Place holder for the action, which will be read by the agent in solution.py
         self.action = None
@@ -51,15 +59,17 @@ class ROSAgent(object):
             self.vehicle), CameraInfo, queue_size=1)
 
         # Get args for training
-        self.args = get_ddpg_args_train()
-        self.dist = None
-        self.angle = None
-        self.prev_dist = None
-        self.prev_angle = None
+        self.v = None
+        self.omega = None
+        self.prev_v = None
+        self.prev_omega = None
         self.total_timesteps = 0
+
+        self.args = args
+        self.action_space = action_space
         
         # Initializes the node
-        rospy.init_node('GymDuckietown')
+        rospy.init_node('GymDuckietown', log_level=rospy.INFO)
 
     def init_policy(self, state_dim, action_dim, max_action):
         self.policy = DDPG(state_dim, action_dim, max_action)
@@ -69,24 +79,27 @@ class ROSAgent(object):
         Callback to listen to last outputted action from inverse_kinematics node
         Stores it and sustains same action until new message published on topic
         """
-        self.prev_dist=self.dist
-        self.prev_angle=self.angle
+        self.prev_v=self.v
+        self.prev_omega=self.omega
 
-        self.dist = msg.d
-        self.angle = msg.phi
-        logging.error("HELLO")
+        self.v = msg.v
+        self.omega = msg.omega
         # Select action randomly or according to policy
         if self.total_timesteps < self.args.start_timesteps:
-            action = env.action_space.sample()
+            rospy.logerr_once("RANDOM")
+            action = self.action_space.sample()
+        elif self.total_timesteps < self.args.controller_timesteps:
+            rospy.logerr_once("CONTROLLER")
+            action = np.array([msg.v, msg.omega])
         else:
-            action = self.policy.predict(np.array(self.obs), np.array(self.dist), np.array(self.angle),
-            only_pid=total_timesteps-self.args.start_timesteps<self.args.pid_timesteps)
+            rospy.logerr_once("RL")
+            action = self.policy.predict(np.array(self.obs), np.array(self.v), np.array(self.omega))
             if self.args.expl_noise != 0:
                 action = (action + np.random.normal(
                     0,
-                    args.expl_noise,
-                    size=env.action_space.shape[0])
-                        ).clip(env.action_space.low, env.action_space.high)
+                    self.args.expl_noise,
+                    size=self.action_space.shape[0])
+                        ).clip(self.action_space.low, self.action_space.high)
         self.prev_action = self.action
         self.action = action
         self.updated = True
@@ -114,19 +127,24 @@ class ROSAgent(object):
         data = np.array(cv2.imencode('.jpg', contig)[1])
         img_msg.data = data.tostring()
 
-        self.obs = data
+        self.obs = obs
 
         self.cam_pub.publish(img_msg)
         self._publish_info()
         self.callback_processed = False
 
 if __name__ == '__main__':
-    rosagent = ROSAgent()
+    args = get_ddpg_args_train()
+
+    seed(args.seed)
+
     env = launch_env()
     # env = ActionWrapper(env)
     env = DtRewardWrapper(env)
     env = SteeringToWheelVelWrapper(env)
-    #env = wrappers.Monitor(env, './gym_results', video_callable=lambda episode_id: True, force=True)
+    rosagent = ROSAgent(args, env.action_space)
+
+    # env = wrappers.Monitor(env, '/duckietown/gym_results', video_callable=lambda episode_id: True, force=True)
     ################################################################################
     policy_name = "DDPG"
 
@@ -139,13 +157,13 @@ if __name__ == '__main__':
         str(args.seed),
     )
 
-    if not os.path.exists("./results"):
-        os.makedirs("./results")
-    if args.save_models and not os.path.exists("./pytorch_models"):
-        os.makedirs("./pytorch_models")
+    if not os.path.exists("/duckietown/catkin_ws/results"):
+        os.makedirs("/duckietown/catkin_ws/results")
+    if args.save_models and not os.path.exists("/duckietown/catkin_ws/pytorch_models"):
+        os.makedirs("/duckietown/catkin_ws/pytorch_models")
 
-    logger = logging.getLogger('gym-duckietown')
-    logger.setLevel(logging.INFO)
+    logging.getLogger('gym-duckietown').setLevel(logging.ERROR)
+    logging.getLogger("rosout").setLevel(logging.INFO)
 
     # Set seeds
     seed(args.seed)
@@ -160,9 +178,6 @@ if __name__ == '__main__':
 
     replay_buffer = ReplayBuffer(args.replay_buffer_max_size)
 
-    # Evaluate untrained policy
-    # evaluations= [evaluate_policy(env, policy, device)]
-
 
     total_timesteps = 0
     timesteps_since_eval = 0
@@ -171,25 +186,34 @@ if __name__ == '__main__':
     episode_reward = None
     env_counter = 0
     obs = env.reset()
+
+    rospy.logerr("WAITING LINE DETECTION")
     while rosagent.action is None:
         rosagent.publish_img(obs)
 
+    rospy.logerr("STARTING")
+
+    # Evaluate untrained policy
+    evaluations= [evaluate_policy(env, rosagent.policy, device)]
     while total_timesteps < args.max_timesteps:
+        start = time.time()
         if done:
 
             if total_timesteps != 0:
-                print(("Total T: %d Episode Num: %d Episode T: %d Reward: %f") % (
+                rospy.logerr(("Total T: %d Episode Num: %d Episode T: %d Reward: %f") % (
                     total_timesteps, episode_num, episode_timesteps, episode_reward))
-                rosagent.policy.train(replay_buffer, episode_timesteps, args.batch_size, args.discount, args.tau)
+                rosagent.policy.train(replay_buffer, episode_timesteps, args.batch_size, args.discount, args.tau, 
+                 only_critic=total_timesteps < args.controller_timesteps)
 
             # Evaluate episode
             if timesteps_since_eval >= args.eval_freq:
                 timesteps_since_eval %= args.eval_freq
                 evaluations.append(evaluate_policy(env, rosagent.policy, device))
+                rospy.logerr("Policy evaluation: %f" % (evaluations[-1]))
 
                 if args.save_models:
-                    rosagent.policy.save(file_name, directory="./pytorch_models")
-                np.savez("./results/{}.npz".format(file_name),evaluations)
+                    rosagent.policy.save(file_name, directory="/duckietown/catkin_ws/pytorch_models")
+                np.savez("/duckietown/catkin_ws/results/{}.npz".format(file_name),evaluations)
 
             # Reset environment
             env_counter += 1
@@ -213,9 +237,6 @@ if __name__ == '__main__':
         #    time.sleep(0.001)
         #print(time.time()-time_1)
 
-        next_dist = rosagent.dist       # Distance to lane center. Left is negative, right is positive.
-        next_angle = rosagent.angle  # Angle from straight, in radians. Left is negative, right is positive.
-
         if episode_timesteps >= args.env_timesteps:
             done = True
 
@@ -225,8 +246,8 @@ if __name__ == '__main__':
         # Store data in replay buffer
 
         if rosagent.action is not None:
-            replay_buffer.add(obs, new_obs, action, reward, done_bool,
-            rosagent.prev_dist, rosagent.prev_angle, next_dist, next_angle)
+            replay_buffer.add(imgWrapper(obs), imgWrapper(new_obs), action, reward, done_bool,
+            rosagent.prev_v, rosagent.prev_omega, rosagent.v, rosagent.omega)
 
             episode_timesteps += 1
             total_timesteps += 1
@@ -240,6 +261,6 @@ if __name__ == '__main__':
 
 
     if args.save_models:
-        rosagent.policy.save(file_name, directory="./pytorch_models")
-    np.savez("./pytorch_models/{}.npz".format(file_name),evaluations)
+        rosagent.policy.save(file_name, directory="/duckietown/catkin_ws/pytorch_models")
+    np.savez("/duckietown/catkin_ws/pytorch_models/{}.npz".format(file_name),evaluations)
     ################################################################################

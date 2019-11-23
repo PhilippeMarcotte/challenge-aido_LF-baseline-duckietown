@@ -101,7 +101,7 @@ class Controller:
 
         # Scale the parameters linear such that their real value is at 0.22m/s TODO do this nice that  * (0.22/self.v_bar)
         omega = self.k_d * (0.22/self.v_bar) * self.cross_track_err + self.k_theta * (0.22/self.v_bar) * self.heading_err
-        omega += (omega_feedforward)
+        #omega += (omega_feedforward)
 
         # check if nominal omega satisfies min radius, otherwise constrain it to minimal radius
         idx_min_radius = torch.abs(omega) > v / self.min_radius

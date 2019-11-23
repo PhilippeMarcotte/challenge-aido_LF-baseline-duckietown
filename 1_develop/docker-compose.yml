@@ -1,4 +1,4 @@
-version: '3'
+version: '2.3'
 services:
     lanefollow:
         image: duckietown/dt-notebook:daffy
@@ -6,6 +6,7 @@ services:
             context: .
             dockerfile: DockerfileNB
         working_dir: /duckietown
+        runtime: nvidia
         networks:
         - duckietown-docker-net
         depends_on:
@@ -17,6 +18,7 @@ services:
         - ./sim_ws:/duckietown/sim_ws
         - ./simulation:/duckietown/simulation
         - /tmp/.X11-unix:/tmp/.X11-unix
+        - /lib/cuda:/lib/cuda
         environment:
         - "ROS_MASTER_URI=http://sim:11311"
         - "HOSTNAME=default"

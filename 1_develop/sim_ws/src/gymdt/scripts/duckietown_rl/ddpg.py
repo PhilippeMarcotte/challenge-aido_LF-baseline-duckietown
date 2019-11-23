@@ -34,14 +34,14 @@ class ActorPID(nn.Module):
 
         self.tanh = nn.Tanh()
 
-    def forward(self, x, dist, angle):
+    def forward(self, x, v, omega):
         
         x = torch.zeros(x.shape[0], 2) 
-        # x[:,0]=0.5 * torch.ones_like(dist.squeeze())
+        # x[:,0]=0.5 * torch.ones_like(v.squeeze())
         x=x.to(device)
 
 
-        x += self.controller.angle_control_commands(dist.squeeze(), angle.squeeze())
+        x += self.controller.omega_control_commands(v.squeeze(), omega.squeeze())
         
         return x
 
@@ -76,32 +76,23 @@ class ActorCNN(nn.Module):
 
         self.max_action = max_action
 
-    def forward(self, x, dist, angle, only_PID=False):
-        if not only_PID:
-            x = self.bn1(self.lr(self.conv1(x)))
-            x = self.bn2(self.lr(self.conv2(x)))
-            x = self.bn3(self.lr(self.conv3(x)))
-            x = self.bn4(self.lr(self.conv4(x)))
-            x = x.view(x.size(0), -1)  # flatten
-            x = self.dropout(x)
-            x = self.lr(self.lin1(x))
+    def forward(self, x, v, omega):
+        x = self.bn1(self.lr(self.conv1(x)))
+        x = self.bn2(self.lr(self.conv2(x)))
+        x = self.bn3(self.lr(self.conv3(x)))
+        x = self.bn4(self.lr(self.conv4(x)))
+        x = x.view(x.size(0), -1)  # flatten
+        x = self.dropout(x)
+        x = self.lr(self.lin1(x))
 
-            # this is the vanilla implementation
-            # but we're using a slightly different one
-            # x = self.max_action * self.tanh(self.lin2(x))
+        # this is the vanilla implementation
+        # but we're using a slightly different one
+        # x = self.max_action * self.tanh(self.lin2(x))
 
-            # because we don't want our duckie to go backwards
-            x = self.lin2(x)
-            x[:, 0] = self.max_action * self.sigm(x[:, 0])  # because we don't want the duckie to go backwards
-            x[:, 1] = self.tanh(x[:, 1])
-        else:
-            x = torch.zeros(x.shape[0], 2) 
-            # x[:,0]=0.5 * torch.ones_like(dist.squeeze())
-            x=x.to(device)
-
-
-        x += self.controller.angle_control_commands(dist.squeeze(), angle.squeeze())
-        
+        # because we don't want our duckie to go backwards
+        x = self.lin2(x)
+        x[:, 0] = v.squeeze() + self.max_action * self.sigm(x[:, 0])  # because we don't want the duckie to go backwards
+        x[:, 1] = omega.squeeze() + self.tanh(x[:, 1])
 
         return x
 
@@ -166,15 +157,9 @@ class DDPG(object):
         assert net_type in ["cnn", "pid"]
 
         self.state_dim = state_dim
-
-        if net_type == "pid":
-            self.flat = False
-            self.actor = ActorPID(state_dim, action_dim, max_action).to(device)
-            self.actor_target = ActorPID(state_dim, action_dim, max_action).to(device)
-        else:
-            self.flat = False
-            self.actor = ActorCNN(action_dim, max_action).to(device)
-            self.actor_target = ActorCNN(action_dim, max_action).to(device)
+        self.flat = False
+        self.actor = ActorCNN(action_dim, max_action).to(device)
+        self.actor_target = ActorCNN(action_dim, max_action).to(device)
 
         self.actor_target.load_state_dict(self.actor.state_dict())
         self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=1e-4)
@@ -188,40 +173,40 @@ class DDPG(object):
         self.critic_target.load_state_dict(self.critic.state_dict())
         self.critic_optimizer = torch.optim.Adam(self.critic.parameters())
 
-    def predict(self, state, dist, angle, only_pid=False):
+    def predict(self, state, v, omega):
         # just making sure the state has the correct format, otherwise the prediction doesn't work
         state = imgWrapper(state)
         assert state.shape[0] == 3
-        dist = torch.FloatTensor(dist).to(device)
-        angle = torch.FloatTensor(angle).to(device)
+        v = torch.FloatTensor(v).to(device)
+        omega = torch.FloatTensor(omega).to(device)
 
         if self.flat:
             state = torch.FloatTensor(state.reshape(1, -1)).to(device)
         else:
             state = torch.FloatTensor(np.expand_dims(state, axis=0)).to(device)
         
-        return self.actor(state, dist, angle, only_pid).cpu().data.numpy().flatten()
+        return self.actor(state, v, omega).cpu().data.numpy().flatten()
 
-    def train(self, replay_buffer, iterations, batch_size=64, discount=0.99, tau=0.001):
+    def train(self, replay_buffer, iterations, batch_size=64, discount=0.99, tau=0.001, only_critic=False):
 
         for it in range(iterations):
 
             # Sample replay buffer
             sample = replay_buffer.sample(batch_size, flat=self.flat)
-            state = torch.FloatTensor(imgWrapper(sample["state"])).to(device)
+            state = torch.FloatTensor(sample["state"]).to(device)
             action = torch.FloatTensor(sample["action"]).to(device)
-            next_state = torch.FloatTensor(imgWrapper(sample["next_state"])).to(device)
+            next_state = torch.FloatTensor(sample["next_state"]).to(device)
             done = torch.FloatTensor(1 - sample["done"]).to(device)
             reward = torch.FloatTensor(sample["reward"]).to(device)
             
-            dist = torch.FloatTensor(sample["dist"]).to(device)
-            angle = torch.FloatTensor(sample["angle"]).to(device)
+            v = torch.FloatTensor(sample["v"]).to(device)
+            omega = torch.FloatTensor(sample["omega"]).to(device)
             
-            next_dist = torch.FloatTensor(sample["next_dist"]).to(device)
-            next_angle = torch.FloatTensor(sample["next_angle"]).to(device)
+            next_v = torch.FloatTensor(sample["next_v"]).to(device)
+            next_omega = torch.FloatTensor(sample["next_omega"]).to(device)
 
             # Compute the target Q value
-            target_Q = self.critic_target(next_state, self.actor_target(next_state, next_dist, next_angle))
+            target_Q = self.critic_target(next_state, self.actor_target(next_state, next_v, next_omega))
             target_Q = reward + (done * discount * target_Q).detach()
 
             # Get current Q estimate
@@ -235,20 +220,22 @@ class DDPG(object):
             critic_loss.backward()
             self.critic_optimizer.step()
 
-            # Compute actor loss
-            actor_loss = -self.critic(state, self.actor(state, dist, angle)).mean()
+            if not only_critic:
+                # Compute actor loss
+                actor_loss = -self.critic(state, self.actor(state, v, omega)).mean()
 
-            # Optimize the actor
-            self.actor_optimizer.zero_grad()
-            actor_loss.backward()
-            self.actor_optimizer.step()
+                # Optimize the actor
+                self.actor_optimizer.zero_grad()
+                actor_loss.backward()
+                self.actor_optimizer.step()
+
+                for param, target_param in zip(self.actor.parameters(), self.actor_target.parameters()):
+                    target_param.data.copy_(tau * param.data + (1 - tau) * target_param.data)
 
             # Update the frozen target models
             for param, target_param in zip(self.critic.parameters(), self.critic_target.parameters()):
                 target_param.data.copy_(tau * param.data + (1 - tau) * target_param.data)
-
-            for param, target_param in zip(self.actor.parameters(), self.actor_target.parameters()):
-                target_param.data.copy_(tau * param.data + (1 - tau) * target_param.data)
+            
 
     def save(self, filename, directory):
         torch.save(self.actor.state_dict(), '{}/{}_actor.pth'.format(directory, filename))

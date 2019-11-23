@@ -59,10 +59,10 @@ class ReplayBuffer(object):
             "action": np.stack(actions),
             "reward": np.stack(rewards).reshape(-1,1),
             "done": np.stack(dones).reshape(-1,1),
-            "dist": np.stack(dists).reshape(-1,1),
-            "angle": np.stack(angles).reshape(-1,1),
-            "next_dist": np.stack(next_dists).reshape(-1,1),
-            "next_angle": np.stack(next_angles).reshape(-1,1)            
+            "v": np.stack(dists).reshape(-1,1),
+            "omega": np.stack(angles).reshape(-1,1),
+            "next_v": np.stack(next_dists).reshape(-1,1),
+            "next_omega": np.stack(next_angles).reshape(-1,1)            
         }
 
 

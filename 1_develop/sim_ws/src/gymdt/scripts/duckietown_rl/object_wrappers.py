@@ -1,11 +1,12 @@
 import gym
 from gym import spaces
 import numpy as np
+import rospy
 
 def imgWrapper(state):
     from PIL import Image
 
-    state = np.array(Image.fromarray(state).resize((120, 160)))
+    state = np.array(Image.fromarray(state.astype(np.uint8)).resize((120, 160)))
 
     state_lo=np.min(state)
     state_hi=np.max(state)
