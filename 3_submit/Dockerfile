@@ -23,14 +23,16 @@ COPY lf_slim.launch ./
 # RUN /bin/bash -c "mkdir -p custom_ws/src/"
 
 ## Copy or init your packages in here
-# COPY dt_dependent_node custom_ws/src/dt_dependent_node
-# RUN chmod +x custom_ws/src/dt_dependent_node/dt_dependent_node.py
+COPY lane_pp custom_ws/src/lane_pp
+COPY rl_model custom_ws/src/rl_model
+RUN chmod +x custom_ws/src/rl_model/scripts/rl_model_node.py
+RUN chmod +x custom_ws/src/lane_pp/scripts/lane_pp_node.py
 
 ## Do not change the below line! This ensures that your workspace is overlayed on top of the Duckietown stack!
 ## MAKE sure this line is present in the build: This workspace overlays: /code/catkin_ws/devel;/opt/ros/kinetic
-# RUN /bin/bash -c "source /code/catkin_ws/devel/setup.bash && catkin_init_workspace && cd ../.."
-# RUN /bin/bash -c "source /code/catkin_ws/devel/setup.bash && catkin_make -j -C custom_ws/"
-# RUN echo "source custom_ws/devel/setup.bash" >> ~/.bashrc
+RUN /bin/bash -c "source /code/catkin_ws/devel/setup.bash && catkin_init_workspace && cd ../.."
+RUN /bin/bash -c "source /code/catkin_ws/devel/setup.bash && catkin_make -j -C custom_ws/"
+RUN echo "source custom_ws/devel/setup.bash" >> ~/.bashrc
 
 #### END CUSTOM CATKIN_WS ####
 
@@ -46,6 +48,6 @@ RUN mkdir -p /data/config
 RUN git clone https://github.com/duckietown/duckiefleet.git /data/config
 
 # let's see what you've got there...
-CMD ["python", "solution.py"]
+#CMD ["python", "solution.py"]
 ## Uncomment this and comment out the above command to run your own packages.
-# CMD ["/bin/bash", "-c", "source custom_ws/devel/setup.bash && python solution.py"]
+CMD ["/bin/bash", "-c", "source custom_ws/devel/setup.bash && python solution.py"]

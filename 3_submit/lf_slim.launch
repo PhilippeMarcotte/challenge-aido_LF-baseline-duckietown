@@ -12,6 +12,7 @@
     <arg name="/lane_following/lane_filter" default="true"/>
     <arg name="/lane_following/ground_projection" default="true"/>
     <arg name="/lane_following/lane_controller" default="true"/>
+    <arg name="/lane_following/rl_model" default="true"/>
     <arg name="visualization" default="true"/>
     
     <!-- Start Lane Control -->
@@ -27,7 +28,7 @@
                     <arg name="param_file_name" value="$(arg line_detector_param_file_name)"/>
                     <arg name="verbose" value="$(arg verbose)" />
                 </include>
-            </group>
+        </group>
 
         <!-- Ground Projection -->
         <group if="$(arg /lane_following/ground_projection)">
@@ -48,16 +49,39 @@
                 <arg name="param_file_name" value="$(arg param_file_name)"/>
             </include>
         </group>
+        
+        <group if="$(arg /lane_following/rl_model)">
+                <remap from="rl_model_node/corrected_image/compressed" to="camera_node/image/compressed"/>
+                <remap from="rl_model_node/car_cmd" to="lane_controller_node/car_cmd"/>
+                <include file="$(find rl_model)/launch/rl_model_node.launch">
+                    <arg name="veh" value="$(arg veh)"/>
+                </include>
+        </group>
 
         <!-- Lane controller -->
-        <group if="$(arg /lane_following/lane_controller)">
-            <remap from="lane_controller_node/lane_pose" to="lane_filter_node/lane_pose"/>
-            <remap from="lane_controller_node/wheels_cmd_executed" to="wheels_driver_node/wheels_cmd_executed" />
-            <remap from="lane_controller_node/actuator_limits" to="inverse_kinematics_node/actuator_limits" />
-            <include file="$(find lane_control)/launch/lane_controller_node.launch">
+        <group>
+
+            <remap from="lane_pp_node/lane_pose" to="lane_filter_node/lane_pose"/>
+            <remap from="lane_pp_node/seglist_filtered" to="lane_filter_node/seglist_filtered"/>
+            <remap from="lane_pp_node/lineseglist_out" to="ground_projection/lineseglist_out"/>
+            <remap from="lane_pp_node/wheels_cmd_executed" to="wheels_driver_node/wheels_cmd_executed" />
+            <remap from="lane_pp_node/fsm_mode" to="fsm_node/mode" />
+            <remap from="lane_pp_node/obstacle_avoidance_pose" to="obst_avoid/obstacle_avoidance_pose" />
+            <remap from="lane_pp_node/obstacle_detected" to="obstacle_avoidance_node/obstacle_avoidance_active_flag" />
+            <remap from="lane_pp_node/stop_line_reading" to="stop_line_filter_node/stop_line_reading" />
+            <remap from="wheels_driver_node/radius_limit" to="lane_pp_node/radius_limit" />
+
+            <remap from="lane_pp_node/actuator_limits" to="lane_controller_node/actuator_limits" />
+            <remap from="lane_pp_node/actuator_limits_received" to="lane_controller_node/actuator_limits_received" />       
+            <remap from="lane_pp_node/car_cmd" to="lane_controller_node/car_cmd" />
+            <remap from="lane_pp_node/intersection_navigation_pose" to="lane_controller_node/intersection_navigation_pose" />
+            <remap from="lane_pp_node/switch" to="lane_controller_node/switch" />
+
+            <include file="$(find lane_pp)/launch/lane_pp_node.launch">
                 <arg name="veh" value="$(arg veh)"/>
-                <!-- <arg name="param_file_name" value="$(arg param_file_name)"/> -->
-            </include>
+                <arg name="param_file_name" value="default"/>
+            </include>	        
+
         </group>
 
 	<group if="$(arg visualization)">
@@ -78,7 +102,7 @@
     <!-- End Lane Control -->
 
     <!-- Kinematics: turns chassis-level commands into wheels-level commands and chassis-level velocities -->
-    <remap from="kinematics_node/car_cmd" to="lane_controller_node/car_cmd"/>
+    <remap from="kinematics_node/car_cmd" to="rl_model_node/corrected_car_cmd"/>
     <remap from="kinematics_node/wheels_cmd" to="wheels_driver_node/wheels_cmd"/>
     <include file="$(find dagu_car)/launch/kinematics_node.launch">
         <arg name="veh" value="$(arg veh)"/>
