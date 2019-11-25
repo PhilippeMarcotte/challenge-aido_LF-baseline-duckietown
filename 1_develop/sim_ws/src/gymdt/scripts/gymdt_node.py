@@ -87,8 +87,8 @@ class ROSAgent(object):
         # Select action randomly or according to policy
         if self.total_timesteps < self.args.start_timesteps and not self.evaluation:
             rospy.logerr_once("RANDOM")
-            self.rl_action = self.action_space.sample()
-            self.rl_action[1] = 2 * (self.rl_action[1] - 0.5) * 3
+            # self.rl_action = self.action_space.sample()
+            self.rl_action = np.array([np.random.uniform(0, 1), np.random.uniform(-3, 3)])
             action = self.rl_action
         elif self.total_timesteps < self.args.controller_timesteps and not self.evaluation:
             rospy.logerr_once("CONTROLLER")
