@@ -72,11 +72,12 @@ class ActorCNN(nn.Module):
         self.dropout = nn.Dropout(.5)
 
         self.lin1 = nn.Linear(flat_size, 512)
-        self.lin2 = nn.Linear(512, action_dim)
+        self.lin2 = nn.Linear(512, action_dim, bias=False)
+        self.lin2.weight = torch.nn.Parameter(torch.zeros(self.lin2.weight.shape))
 
         self.max_action = max_action
 
-    def forward(self, x, v, omega):
+    def forward(self, x):
         x = self.bn1(self.lr(self.conv1(x)))
         x = self.bn2(self.lr(self.conv2(x)))
         x = self.bn3(self.lr(self.conv3(x)))
@@ -91,8 +92,8 @@ class ActorCNN(nn.Module):
 
         # because we don't want our duckie to go backwards
         x = self.lin2(x)
-        x[:, 0] = v.squeeze() + self.max_action * self.sigm(x[:, 0])  # because we don't want the duckie to go backwards
-        x[:, 1] = omega.squeeze() + self.tanh(x[:, 1])
+        x[:, 0] = self.max_action / 2 * self.sigm(x[:, 0])  # because we don't want the duckie to go backwards
+        x[:, 1] = self.tanh(x[:, 1])
 
         return x
 
@@ -173,40 +174,34 @@ class DDPG(object):
         self.critic_target.load_state_dict(self.critic.state_dict())
         self.critic_optimizer = torch.optim.Adam(self.critic.parameters())
 
-    def predict(self, state, v, omega):
+    def predict(self, state):
         # just making sure the state has the correct format, otherwise the prediction doesn't work
         state = imgWrapper(state)
         assert state.shape[0] == 3
-        v = torch.FloatTensor(v).to(device)
-        omega = torch.FloatTensor(omega).to(device)
+        v = None #torch.FloatTensor(v).to(device)
+        omega = None #torch.FloatTensor(omega).to(device)
 
         if self.flat:
             state = torch.FloatTensor(state.reshape(1, -1)).to(device)
         else:
             state = torch.FloatTensor(np.expand_dims(state, axis=0)).to(device)
         
-        return self.actor(state, v, omega).cpu().data.numpy().flatten()
+        return self.actor(state).cpu().data.numpy().flatten()
 
     def train(self, replay_buffer, iterations, batch_size=64, discount=0.99, tau=0.001, only_critic=False):
-
         for it in range(iterations):
 
             # Sample replay buffer
             sample = replay_buffer.sample(batch_size, flat=self.flat)
             state = torch.FloatTensor(sample["state"]).to(device)
+            controller_action = torch.FloatTensor(sample["controller_action"]).to(device)
             action = torch.FloatTensor(sample["action"]).to(device)
             next_state = torch.FloatTensor(sample["next_state"]).to(device)
             done = torch.FloatTensor(1 - sample["done"]).to(device)
             reward = torch.FloatTensor(sample["reward"]).to(device)
-            
-            v = torch.FloatTensor(sample["v"]).to(device)
-            omega = torch.FloatTensor(sample["omega"]).to(device)
-            
-            next_v = torch.FloatTensor(sample["next_v"]).to(device)
-            next_omega = torch.FloatTensor(sample["next_omega"]).to(device)
 
             # Compute the target Q value
-            target_Q = self.critic_target(next_state, self.actor_target(next_state, next_v, next_omega))
+            target_Q = self.critic_target(next_state, self.actor_target(next_state))
             target_Q = reward + (done * discount * target_Q).detach()
 
             # Get current Q estimate
@@ -222,7 +217,7 @@ class DDPG(object):
 
             if not only_critic:
                 # Compute actor loss
-                actor_loss = -self.critic(state, self.actor(state, v, omega)).mean()
+                actor_loss = -self.critic(state, self.actor(state)).mean()
 
                 # Optimize the actor
                 self.actor_optimizer.zero_grad()

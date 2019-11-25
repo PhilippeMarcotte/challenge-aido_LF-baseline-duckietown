@@ -30,6 +30,7 @@ from gymdt.msg import Twist2DStamped, WheelsCmdStamped, LanePose
 import numpy as np
 import os
 import cv2
+from tensorboardX import SummaryWriter
 
 def seed(seed):
     torch.manual_seed(seed)
@@ -38,7 +39,7 @@ def seed(seed):
 
 
 class ROSAgent(object):
-    def __init__(self, args, action_space):
+    def __init__(self, args, action_space, writer):
         # Get the vehicle name, which comes in as HOSTNAME
         self.vehicle = os.getenv('HOSTNAME')
 
@@ -59,17 +60,20 @@ class ROSAgent(object):
             self.vehicle), CameraInfo, queue_size=1)
 
         # Get args for training
-        self.v = None
-        self.omega = None
-        self.prev_v = None
-        self.prev_omega = None
+        self.controller_action = None
+        self.rl_action = None
         self.total_timesteps = 0
 
         self.args = args
         self.action_space = action_space
+
+        if not os.path.exists("/duckietown/catkin_ws/results/tensorboard"):
+            os.makedirs("/duckietown/catkin_ws/results/tensorboard")
+        self.writer = writer
         
         # Initializes the node
         rospy.init_node('GymDuckietown', log_level=rospy.INFO)
+        self.evaluation = False
 
     def init_policy(self, state_dim, action_dim, max_action):
         self.policy = DDPG(state_dim, action_dim, max_action)
@@ -79,28 +83,26 @@ class ROSAgent(object):
         Callback to listen to last outputted action from inverse_kinematics node
         Stores it and sustains same action until new message published on topic
         """
-        self.prev_v=self.v
-        self.prev_omega=self.omega
-
-        self.v = msg.v
-        self.omega = msg.omega
+        self.controller_action = np.array([msg.v, msg.omega])
         # Select action randomly or according to policy
-        if self.total_timesteps < self.args.start_timesteps:
+        if self.total_timesteps < self.args.start_timesteps and not self.evaluation:
             rospy.logerr_once("RANDOM")
-            action = self.action_space.sample()
-        elif self.total_timesteps < self.args.controller_timesteps:
+            self.rl_action = self.action_space.sample()
+            action = self.rl_action
+        elif self.total_timesteps < self.args.controller_timesteps and not self.evaluation:
             rospy.logerr_once("CONTROLLER")
-            action = np.array([msg.v, msg.omega])
+            action = self.controller_action
         else:
             rospy.logerr_once("RL")
-            action = self.policy.predict(np.array(self.obs), np.array(self.v), np.array(self.omega))
+            self.rl_action = self.policy.predict(np.array(self.obs))
+            action = self.controller_action + self.rl_action
+
             if self.args.expl_noise != 0:
                 action = (action + np.random.normal(
                     0,
                     self.args.expl_noise,
                     size=self.action_space.shape[0])
                         ).clip(self.action_space.low, self.action_space.high)
-        self.prev_action = self.action
         self.action = action
         self.updated = True
         self.callback_processed = True
@@ -112,10 +114,11 @@ class ROSAgent(object):
 
         self.cam_info_pub.publish(CameraInfo())
 
-    def publish_img(self, obs):
+    def publish_img(self, obs, evaluation=False):
         """
         Publishes the image to the compressed_image topic, which triggers the lane following loop
         """
+        self.evaluation = evaluation
         img_msg = CompressedImage()
 
         time = rospy.get_rostime()
@@ -135,6 +138,12 @@ class ROSAgent(object):
 
 if __name__ == '__main__':
     args = get_ddpg_args_train()
+    policy_name = "DDPG"
+    file_name = "{}_{}".format(
+        policy_name,
+        str(args.seed),
+    )
+    writer = SummaryWriter("/duckietown/catkin_ws/results/tensorboard/{}".format(file_name))
 
     seed(args.seed)
 
@@ -142,20 +151,12 @@ if __name__ == '__main__':
     # env = ActionWrapper(env)
     env = DtRewardWrapper(env)
     env = SteeringToWheelVelWrapper(env)
-    rosagent = ROSAgent(args, env.action_space)
+    rosagent = ROSAgent(args, env.action_space, writer)
 
     # env = wrappers.Monitor(env, '/duckietown/gym_results', video_callable=lambda episode_id: True, force=True)
     ################################################################################
-    policy_name = "DDPG"
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    args = get_ddpg_args_train()
-
-    file_name = "{}_{}".format(
-        policy_name,
-        str(args.seed),
-    )
 
     if not os.path.exists("/duckietown/catkin_ws/results"):
         os.makedirs("/duckietown/catkin_ws/results")
@@ -194,21 +195,25 @@ if __name__ == '__main__':
     rospy.logerr("STARTING")
 
     # Evaluate untrained policy
-    evaluations= [evaluate_policy(env, rosagent.policy, device)]
+    evaluations= [evaluate_policy(env, rosagent, device)]
+    writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
+    time_avg = deque(maxlen=10000)
     while total_timesteps < args.max_timesteps:
         start = time.time()
         if done:
 
             if total_timesteps != 0:
-                rospy.logerr(("Total T: %d Episode Num: %d Episode T: %d Reward: %f") % (
-                    total_timesteps, episode_num, episode_timesteps, episode_reward))
+                rospy.logerr(("Total T: %d Episode Num: %d Episode T: %d Reward: %f Duration: %.2f s Time Left: %.2f h") % (
+                    total_timesteps, episode_num, episode_timesteps, episode_reward, 
+                    np.average(time_avg), np.average(time_avg) * (args.max_timesteps - total_timesteps) / 3600.0))
                 rosagent.policy.train(replay_buffer, episode_timesteps, args.batch_size, args.discount, args.tau, 
-                 only_critic=total_timesteps < args.controller_timesteps)
+                 only_critic=False)
 
             # Evaluate episode
             if timesteps_since_eval >= args.eval_freq:
                 timesteps_since_eval %= args.eval_freq
-                evaluations.append(evaluate_policy(env, rosagent.policy, device))
+                evaluations.append(evaluate_policy(env, rosagent, device))
+                writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
                 rospy.logerr("Policy evaluation: %f" % (evaluations[-1]))
 
                 if args.save_models:
@@ -220,8 +225,12 @@ if __name__ == '__main__':
             # env.close()
             obs = env.reset()
             rosagent.publish_img(obs)
+            while not rosagent.callback_processed:
+                continue
             # env.reset_video_recorder()
             # env = wrappers.Monitor(env, './gym_results', video_callable=lambda episode_id: True, force=True)
+            if episode_reward is not None:
+                writer.add_scalar("train.reward", episode_reward, total_timesteps)
             done = False
             episode_reward = 0
             episode_timesteps = 0
@@ -230,12 +239,15 @@ if __name__ == '__main__':
         action=rosagent.action
 
         # Perform action
-        new_obs, reward, done, _ = env.step(action if action is not None else np.array([0.0, 0.0]))
+        new_obs, reward, done, _ = env.step(action)
         rosagent.publish_img(new_obs)
+        while not rosagent.callback_processed:
+            continue
 
-        #while not rosagent.callback_processed:
-        #    time.sleep(0.001)
-        #print(time.time()-time_1)
+        writer.add_scalar("train.controller.action.v", np.abs(rosagent.controller_action[0]), total_timesteps)
+        writer.add_scalar("train.controller.action.omega", np.abs(rosagent.controller_action[1]), total_timesteps)
+        writer.add_scalar("train.rl.action.v", np.abs(rosagent.rl_action[0]), total_timesteps)
+        writer.add_scalar("train.rl.action.omega", np.abs(rosagent.rl_action[1]), total_timesteps)
 
         if episode_timesteps >= args.env_timesteps:
             done = True
@@ -244,20 +256,18 @@ if __name__ == '__main__':
         episode_reward += reward
 
         # Store data in replay buffer
+        replay_buffer.add(imgWrapper(obs), imgWrapper(new_obs), rosagent.controller_action, rosagent.rl_action, reward, done_bool)
 
-        if rosagent.action is not None:
-            replay_buffer.add(imgWrapper(obs), imgWrapper(new_obs), action, reward, done_bool,
-            rosagent.prev_v, rosagent.prev_omega, rosagent.v, rosagent.omega)
-
-            episode_timesteps += 1
-            total_timesteps += 1
-            rosagent.total_timesteps = total_timesteps
-            timesteps_since_eval += 1
+        episode_timesteps += 1
+        total_timesteps += 1
+        rosagent.total_timesteps = total_timesteps
+        timesteps_since_eval += 1
 
         obs = new_obs
+        time_avg.append(time.time() - start)
 
     # Final evaluation
-    evaluations.append(evaluate_policy(env, rosagent.policy, device))
+    evaluations.append(evaluate_policy(env, rosagent, device))
 
 
     if args.save_models:
