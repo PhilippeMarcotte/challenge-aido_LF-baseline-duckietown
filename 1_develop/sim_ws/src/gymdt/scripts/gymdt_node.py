@@ -88,6 +88,7 @@ class ROSAgent(object):
         if self.total_timesteps < self.args.start_timesteps and not self.evaluation:
             rospy.logerr_once("RANDOM")
             self.rl_action = self.action_space.sample()
+            self.rl_action[1] = 2 * (self.rl_action[1] - 0.5) * 3
             action = self.rl_action
         elif self.total_timesteps < self.args.controller_timesteps and not self.evaluation:
             rospy.logerr_once("CONTROLLER")
@@ -244,10 +245,15 @@ if __name__ == '__main__':
         while not rosagent.callback_processed:
             continue
 
-        writer.add_scalar("train.controller.action.v", np.abs(rosagent.controller_action[0]), total_timesteps)
-        writer.add_scalar("train.controller.action.omega", np.abs(rosagent.controller_action[1]), total_timesteps)
-        writer.add_scalar("train.rl.action.v", np.abs(rosagent.rl_action[0]), total_timesteps)
-        writer.add_scalar("train.rl.action.omega", np.abs(rosagent.rl_action[1]), total_timesteps)
+        writer.add_scalar("train.controller.action.abs_v", np.abs(rosagent.controller_action[0]), total_timesteps)
+        writer.add_scalar("train.controller.action.abs_omega", np.abs(rosagent.controller_action[1]), total_timesteps)
+        writer.add_scalar("train.rl.action.abs_v", np.abs(rosagent.rl_action[0]), total_timesteps)
+        writer.add_scalar("train.rl.action.abs_omega", np.abs(rosagent.rl_action[1]), total_timesteps)
+
+        writer.add_scalar("train.controller.action.v", rosagent.controller_action[0], total_timesteps)
+        writer.add_scalar("train.controller.action.omega", rosagent.controller_action[1], total_timesteps)
+        writer.add_scalar("train.rl.action.v", rosagent.rl_action[0], total_timesteps)
+        writer.add_scalar("train.rl.action.omega", rosagent.rl_action[1], total_timesteps)
 
         if episode_timesteps >= args.env_timesteps:
             done = True
