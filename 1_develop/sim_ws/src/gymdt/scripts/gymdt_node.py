@@ -88,7 +88,7 @@ class ROSAgent(object):
         if self.total_timesteps < self.args.start_timesteps and not self.evaluation:
             rospy.logerr_once("RANDOM")
             # self.rl_action = self.action_space.sample()
-            self.rl_action = np.array([np.random.uniform(0, 1), np.random.uniform(-3, 3)])
+            self.rl_action = np.array([np.random.uniform(0, 1), np.random.uniform(-1, 1)])
             action = self.rl_action
         elif self.total_timesteps < self.args.controller_timesteps and not self.evaluation:
             rospy.logerr_once("CONTROLLER")
@@ -96,14 +96,16 @@ class ROSAgent(object):
         else:
             rospy.logerr_once("RL")
             self.rl_action = self.policy.predict(np.array(self.obs))
-            action = self.controller_action + self.rl_action
+            action = self.controller_action + self.rl_action.copy()
 
-            if self.args.expl_noise != 0:
-                action = (action + np.random.normal(
+            if self.args.expl_noise != 0 and not self.evaluation:
+                noise = np.random.normal(
                     0,
                     self.args.expl_noise,
                     size=self.action_space.shape[0])
-                        ).clip(self.action_space.low, self.action_space.high)
+                rospy.logerr("Noise {}".format(noise))
+                action = (action + noise).clip(self.action_space.low, self.action_space.high) # (-1, 1)
+                rospy.logerr("Action {}".format(action))
         self.action = action
         self.updated = True
         self.callback_processed = True
@@ -174,6 +176,8 @@ if __name__ == '__main__':
     action_dim = env.action_space.shape[0]
     max_action = float(env.action_space.high[0])
 
+
+
     # Initialize policy
     rosagent.init_policy(state_dim, action_dim, max_action)
     # policy = DDPG(state_dim, action_dim, max_action)
@@ -196,14 +200,14 @@ if __name__ == '__main__':
     rospy.logerr("STARTING")
 
     # Evaluate untrained policy
-    evaluations= [evaluate_policy(env, rosagent, device)]
-    writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
+    #evaluations= [evaluate_policy(env, rosagent, device)]
+    # writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
     time_avg = deque(maxlen=10000)
     while total_timesteps < args.max_timesteps:
         start = time.time()
         if done:
 
-            if total_timesteps != 0:
+            if total_timesteps != 0 and total_timesteps > args.start_timesteps:
                 rospy.logerr(("Total T: %d Episode Num: %d Episode T: %d Reward: %f Duration: %.2f s Time Left: %.2f h") % (
                     total_timesteps, episode_num, episode_timesteps, episode_reward, 
                     np.average(time_avg), np.average(time_avg) * (args.max_timesteps - total_timesteps) / 3600.0))

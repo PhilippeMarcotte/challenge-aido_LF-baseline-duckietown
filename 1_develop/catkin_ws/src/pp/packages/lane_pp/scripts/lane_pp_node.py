@@ -89,25 +89,25 @@ class lane_controller(object):
         x_yellow=0
         y_white=0
         y_yellow=0
-        L=0.4
+        L=0.5
 #         rospy.loginfo(seg_list)
         for line in seg_list.segments:
             mean_x  =(line.points[0].x+line.points[1].x)/2
             mean_y  =(line.points[0].y+line.points[1].y)/2
             d       =(mean_x**2+mean_y**2)**0.5
             factor  =1/(1+np.abs(d-L)**2)
-            if d<10*L:
+            # if d<10*L:
     #             rospy.loginfo(line.color == line.YELLOW)
-                if line.color == line.WHITE:
-                    x_white+=factor*mean_x
-                    y_white+=factor*mean_y
-                    n_white+=factor
-    #                 rospy.loginfo(line)
-                elif line.color == line.YELLOW:
-                    x_yellow+=factor*mean_x
-                    y_yellow+=factor*mean_y
-                    n_yellow+=factor
-    #                 rospy.loginfo(line)
+            if line.color == line.WHITE:
+                x_white+=factor*mean_x
+                y_white+=factor*mean_y
+                n_white+=factor
+#                 rospy.loginfo(line)
+            elif line.color == line.YELLOW:
+                x_yellow+=factor*mean_x
+                y_yellow+=factor*mean_y
+                n_yellow+=factor
+#                 rospy.loginfo(line)
 
         if n_yellow>0:
             x_mean=(x_yellow/n_yellow)
@@ -123,14 +123,14 @@ class lane_controller(object):
         
         alpha=np.arctan2(y_mean,x_mean)
         lookup_distance = (x_mean**2+y_mean**2)**0.5
-        if lookup_distance<L:
-            lookup_distance=L
+        if lookup_distance < 3 * L / 4:
+            lookup_distance = 3 * L / 4 
         
 #         if car_control_msg.v > self.actuator_limits.v:
 #             car_control_msg.v = self.actuator_limits.v
         
 #         omega=f_cor*2*self.v_bar*np.sin(alpha)/lookup_distance
-        v=(lookup_distance/L)*0.25
+        v=(lookup_distance/L)*0.3
 
         omega=2*v*np.sin(alpha)/(lookup_distance+np.exp(-6))
         car_control_msg.v=v
