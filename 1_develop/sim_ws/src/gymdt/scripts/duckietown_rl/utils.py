@@ -70,8 +70,6 @@ def evaluate_policy(env, agent, device, eval_episodes=10, max_timesteps=500):
         step = 0
         while not done and step < max_timesteps:
             agent.publish_img(obs, evaluation=True)
-            while not agent.callback_processed:
-                continue
 
             agent.writer.add_scalar("eval.controller.action.v", np.abs(agent.controller_action[0]), step)
             agent.writer.add_scalar("eval.controller.action.omega", np.abs(agent.controller_action[1]), step)

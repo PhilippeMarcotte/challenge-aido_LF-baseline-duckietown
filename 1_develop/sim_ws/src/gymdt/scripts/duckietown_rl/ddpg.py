@@ -93,7 +93,7 @@ class ActorCNN(nn.Module):
         # because we don't want our duckie to go backwards
         x = self.lin2(x)
         x[:, 0] = self.max_action / 2 * self.sigm(x[:, 0])  # because we don't want the duckie to go backwards
-        x[:, 1] = 3 * self.tanh(x[:, 1])
+        x[:, 1] = self.tanh(x[:, 1])
 
         return x
 
