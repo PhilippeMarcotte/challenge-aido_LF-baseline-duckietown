@@ -1,3 +1,4 @@
 sklearn
 pygeometry
 reprep
+torch==1.0.0
