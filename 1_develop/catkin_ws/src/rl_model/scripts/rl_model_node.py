@@ -52,9 +52,10 @@ class rl_model(object):
 
         correction = self.policy.predict(self.obs)
         
-        rospy.loginfo("{}, {}, {}".format(correction[1], car_cmd.omega, correction[1] * 0.15 + car_cmd.omega))
-        correction_msg.v = car_cmd.v + 0.15 * correction[0]
-        correction_msg.omega = car_cmd.omega + 0.15 * correction[1]
+        correction = 0.15 * correction
+        correction_msg.v = car_cmd.v + correction[0]
+        correction_msg.omega = car_cmd.omega + correction[1]
+        rospy.loginfo([car_cmd.v, car_cmd.omega, correction[0], correction[1], correction_msg.v, correction_msg.omega])
         self.publishCmd(correction_msg)
 
 

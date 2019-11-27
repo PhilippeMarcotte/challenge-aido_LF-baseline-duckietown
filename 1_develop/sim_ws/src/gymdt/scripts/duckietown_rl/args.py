@@ -6,7 +6,7 @@ def get_ddpg_args_train():
     args.seed = 123  # Sets Gym, PyTorch and Numpy seeds
     args.start_timesteps = 1e4  # How many time steps purely random policy is run for
     args.eval_freq = 5e4  # How often (time steps) we evaluate
-    args.max_timesteps = 2.5e5 # Max time steps to run environment for
+    args.max_timesteps = 1e5 # Max time steps to run environment for
     args.save_models = True  # Whether or not models are saved
     args.expl_noise = 0.1  # Std of Gaussian exploration noise
     args.batch_size = 32  # Batch size for both actor and critic

@@ -89,7 +89,7 @@ class lane_controller(object):
         x_yellow=0
         y_white=0
         y_yellow=0
-        L=0.5
+        L=0.4
 #         rospy.loginfo(seg_list)
         for line in seg_list.segments:
             mean_x  =(line.points[0].x+line.points[1].x)/2
@@ -123,16 +123,16 @@ class lane_controller(object):
         
         alpha=np.arctan2(y_mean,x_mean)
         lookup_distance = (x_mean**2+y_mean**2)**0.5
-        if lookup_distance < 3 * L / 4:
-            lookup_distance = 3 * L / 4 
+        if lookup_distance < L:
+            lookup_distance = L
         
 #         if car_control_msg.v > self.actuator_limits.v:
 #             car_control_msg.v = self.actuator_limits.v
         
 #         omega=f_cor*2*self.v_bar*np.sin(alpha)/lookup_distance
-        v=(lookup_distance/L)*0.3
+        v=(lookup_distance/L)*0.25
 
-        omega=2*v*np.sin(alpha)/(lookup_distance+np.exp(-6))
+        omega=2*v*np.sin(alpha)/(lookup_distance+np.exp(-6)) - 0.15
         car_control_msg.v=v
         
 #         apply magic conversion factors

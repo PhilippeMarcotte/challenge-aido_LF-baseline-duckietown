@@ -89,21 +89,22 @@ class ROSAgent(object):
             rospy.logerr_once("RANDOM")
             # self.rl_action = self.action_space.sample()
             self.rl_action = np.array([np.random.uniform(0, 1), np.random.uniform(-1, 1)])
-            action = self.rl_action
+            action = self.controller_action + self.rl_action
         elif self.total_timesteps < self.args.controller_timesteps and not self.evaluation:
             rospy.logerr_once("CONTROLLER")
             action = self.controller_action
         else:
             rospy.logerr_once("RL")
             self.rl_action = self.policy.predict(np.array(self.obs))
-            action = self.controller_action + self.rl_action
 
             if self.args.expl_noise != 0 and not self.evaluation:
                 noise = np.random.normal(
                     0,
                     self.args.expl_noise,
                     size=self.action_space.shape[0])
-                action = (action + noise).clip(-1, 1) # (self.action_space.low, self.action_space.high)
+                self.rl_action += noise.clip(-1, 1) # (self.action_space.low, self.action_space.high)
+
+            action = self.controller_action + self.rl_action
         self.action = action
         self.updated = True
         self.callback_processed = True
