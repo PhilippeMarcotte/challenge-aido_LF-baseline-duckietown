@@ -71,10 +71,14 @@ def evaluate_policy(env, agent, device, eval_episodes=10, max_timesteps=500):
         while not done and step < max_timesteps:
             agent.publish_img(obs, evaluation=True)
 
-            agent.writer.add_scalar("eval.controller.action.v", np.abs(agent.controller_action[0]), step)
-            agent.writer.add_scalar("eval.controller.action.omega", np.abs(agent.controller_action[1]), step)
-            agent.writer.add_scalar("eval.rl.action.v", np.abs(agent.rl_action[0]), step)
-            agent.writer.add_scalar("eval.rl.action.omega", np.abs(agent.rl_action[1]), step)
+            agent.writer.add_scalar("eval.controller.action.absvl", np.abs(agent.controller_action[0]), step)
+            agent.writer.add_scalar("eval.controller.action.absvr", np.abs(agent.controller_action[1]), step)
+            agent.writer.add_scalar("eval.rl.action.absvl", np.abs(agent.rl_action[0]), step)
+            agent.writer.add_scalar("eval.rl.action.absvr", np.abs(agent.rl_action[1]), step)
+            agent.writer.add_scalar("eval.controller.action.vl", agent.controller_action[0], step)
+            agent.writer.add_scalar("eval.controller.action.vr", agent.controller_action[1], step)
+            agent.writer.add_scalar("eval.rl.action.vl", agent.rl_action[0], step)
+            agent.writer.add_scalar("eval.rl.action.vr", agent.rl_action[1], step)
 
             obs, reward, done, _ = env.step(agent.action)
             avg_reward += reward

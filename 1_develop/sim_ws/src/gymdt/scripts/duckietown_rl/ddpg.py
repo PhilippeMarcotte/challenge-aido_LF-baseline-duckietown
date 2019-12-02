@@ -69,7 +69,7 @@ class ActorCNN(nn.Module):
         self.bn3 = nn.BatchNorm2d(32)
         self.bn4 = nn.BatchNorm2d(32)
 
-        self.dropout = nn.Dropout(.5)
+        self.dropout = nn.Dropout(.5) # remove it
 
         self.lin1 = nn.Linear(flat_size, 512)
         self.lin2 = nn.Linear(512, action_dim, bias=False)
@@ -83,7 +83,7 @@ class ActorCNN(nn.Module):
         x = self.bn3(self.lr(self.conv3(x)))
         x = self.bn4(self.lr(self.conv4(x)))
         x = x.view(x.size(0), -1)  # flatten
-        x = self.dropout(x)
+        # x = self.dropout(x)
         x = self.lr(self.lin1(x))
 
         # this is the vanilla implementation
@@ -92,7 +92,8 @@ class ActorCNN(nn.Module):
 
         # because we don't want our duckie to go backwards
         x = self.lin2(x)
-        x[:, 0] = self.max_action / 2 * self.sigm(x[:, 0])  # because we don't want the duckie to go backwards
+        # switch to tanh
+        x[:, 0] = self.tanh(x[:, 0]) # self.max_action * self.sigm(x[:, 0]) # because we don't want the duckie to go backwards
         x[:, 1] = self.tanh(x[:, 1])
 
         return x
@@ -133,7 +134,7 @@ class CriticCNN(nn.Module):
         self.bn3 = nn.BatchNorm2d(32)
         self.bn4 = nn.BatchNorm2d(32)
 
-        self.dropout = nn.Dropout(.5)
+        self.dropout = nn.Dropout(.5) # remove it
 
         self.lin1 = nn.Linear(flat_size, 256)
         self.lin2 = nn.Linear(256 + action_dim, 128)

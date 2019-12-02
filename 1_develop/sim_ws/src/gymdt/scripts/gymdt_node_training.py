@@ -10,7 +10,7 @@ import os
 from duckietown_rl.ddpg import DDPG
 from duckietown_rl.args import get_ddpg_args_train
 from duckietown_rl.utils import seed, evaluate_policy, ReplayBuffer 
-from duckietown_rl.wrappers import DtRewardWrapper, ActionWrapper, SteeringToWheelVelWrapper
+from duckietown_rl.wrappers import DtRewardWrapper, ActionWrapper, SteeringToWheelVelWrapper, MotionBlurWrapper
 from duckietown_rl.object_wrappers import imgWrapper
 
 from collections import deque
@@ -43,8 +43,8 @@ class ROSAgent(object):
         # Get the vehicle name, which comes in as HOSTNAME
         self.vehicle = os.getenv('HOSTNAME')
 
-        self.ik_action_sub = rospy.Subscriber('/{}/lane_controller_node/car_cmd'.format(
-            self.vehicle), Twist2DStamped, self._ik_action_cb)
+        self.ik_action_sub = rospy.Subscriber('/{}/wheels_driver_node/wheels_cmd'.format(
+            self.vehicle), WheelsCmdStamped, self._ik_action_cb)
             # rospy.Subscriber("~lane_pose", LanePose, self.error_reader, queue_size=1)
         # Place holder for the action, which will be read by the agent in solution.py
         self.action = None
@@ -83,29 +83,26 @@ class ROSAgent(object):
         Callback to listen to last outputted action from inverse_kinematics node
         Stores it and sustains same action until new message published on topic
         """
-        self.controller_action = np.array([msg.v, msg.omega])
+        self.controller_action = np.array([msg.vel_left, msg.vel_right])
         # Select action randomly or according to policy
         if self.total_timesteps < self.args.start_timesteps and not self.evaluation:
             rospy.logerr_once("RANDOM")
             # self.rl_action = self.action_space.sample()
-            self.rl_action = np.array([np.random.uniform(0, 1), np.random.uniform(-1, 1)])
-            action = self.controller_action + self.rl_action
-        elif self.total_timesteps < self.args.controller_timesteps and not self.evaluation:
-            rospy.logerr_once("CONTROLLER")
-            action = self.controller_action
+            self.rl_action = np.array([np.random.uniform(-1, 1), np.random.uniform(-1, 1)])
         else:
             rospy.logerr_once("RL")
             self.rl_action = self.policy.predict(np.array(self.obs))
+            self.rl_action_clean = self.rl_action.copy()
 
-            if self.args.expl_noise != 0 and not self.evaluation:
-                noise = np.random.normal(
-                    0,
-                    self.args.expl_noise,
-                    size=self.action_space.shape[0])
-                self.rl_action += noise.clip(-1, 1) # (self.action_space.low, self.action_space.high)
-
-            action = self.controller_action + self.rl_action
-        self.action = action
+            # if self.args.expl_noise != 0 and not self.evaluation:
+            #     noise = np.random.normal(
+            #         0,
+            #         self.args.expl_noise,
+            #         size=self.action_space.shape[0])
+            #     self.rl_action += noise.clip(self.action_space.low, self.action_space.high)
+        
+        self.rl_action_scaled = 0.5 * (self.rl_action + 1)
+        self.action = self.controller_action + self.rl_action_scaled
         self.updated = True
         self.callback_processed = True
 
@@ -156,11 +153,12 @@ if __name__ == '__main__':
 
     env = launch_env()
     # env = ActionWrapper(env)
-    env = DtRewardWrapper(env)
-    env = SteeringToWheelVelWrapper(env)
+    # env = DtRewardWrapper(env)
+    # env = SteeringToWheelVelWrapper(env)
+    # env = MotionBlurWrapper(env)
     rosagent = ROSAgent(args, env.action_space, writer)
 
-    # env = wrappers.Monitor(env, '/duckietown/gym_results', video_callable=lambda episode_id: True, force=True)
+    # env = wrappers.Monitor(env, '/duckietown/catkin_ws/gym_results', video_callable=lambda episode_id: True, force=True)
     ################################################################################
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -179,8 +177,6 @@ if __name__ == '__main__':
     state_dim = env.observation_space.shape
     action_dim = env.action_space.shape[0]
     max_action = float(env.action_space.high[0])
-
-
 
     # Initialize policy
     rosagent.init_policy(state_dim, action_dim, max_action)
@@ -204,13 +200,12 @@ if __name__ == '__main__':
     rospy.logerr("STARTING")
 
     # Evaluate untrained policy
-    evaluations= [evaluate_policy(env, rosagent, device)]
-    writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
+    evaluations= [] #[evaluate_policy(env, rosagent, device)]
+    # writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
     time_avg = deque(maxlen=10000)
     while total_timesteps < args.max_timesteps:
         start = time.time()
         if done:
-
             if total_timesteps != 0:
                 rospy.logerr(("Total T: %d Episode Num: %d Episode T: %d Reward: %f Duration: %.2f s Time Left: %.2f h") % (
                     total_timesteps, episode_num, episode_timesteps, episode_reward, 
@@ -248,19 +243,31 @@ if __name__ == '__main__':
         action=rosagent.action
 
         # Perform action
+        # rescale action from -1 and 1 to 0 and 1
         new_obs, reward, done, _ = env.step(rosagent.action)
         rosagent.publish_img(new_obs)
 
-        writer.add_scalar("train.controller.action.abs_v", np.abs(rosagent.controller_action[0]), total_timesteps)
-        writer.add_scalar("train.controller.action.abs_omega", np.abs(rosagent.controller_action[1]), total_timesteps)
-        writer.add_scalar("train.rl.action.abs_v", np.abs(rosagent.rl_action[0]), total_timesteps)
-        writer.add_scalar("train.rl.action.abs_omega", np.abs(rosagent.rl_action[1]), total_timesteps)
+        writer.add_scalar("train.controller.action.absvl", np.abs(rosagent.controller_action[0]), total_timesteps)
+        writer.add_scalar("train.controller.action.absvr", np.abs(rosagent.controller_action[1]), total_timesteps)
+        writer.add_scalar("train.controller.action.vl", rosagent.controller_action[0], total_timesteps)
+        writer.add_scalar("train.controller.action.vr", rosagent.controller_action[1], total_timesteps)
 
-        writer.add_scalar("train.controller.action.v", rosagent.controller_action[0], total_timesteps)
-        writer.add_scalar("train.controller.action.omega", rosagent.controller_action[1], total_timesteps)
-        writer.add_scalar("train.rl.action.v", rosagent.rl_action[0], total_timesteps)
-        writer.add_scalar("train.rl.action.omega", rosagent.rl_action[1], total_timesteps)
-
+        if total_timesteps < args.start_timesteps:
+            writer.add_scalar("train.rl.action.absvl", np.abs(rosagent.rl_action[0]), total_timesteps)
+            writer.add_scalar("train.rl.action.absvr", np.abs(rosagent.rl_action[1]), total_timesteps)
+            writer.add_scalar("train.rl.action.vl", rosagent.rl_action[0], total_timesteps)
+            writer.add_scalar("train.rl.action.vr", rosagent.rl_action[1], total_timesteps)
+            writer.add_scalar("train.rl.action.scaled_vl", rosagent.rl_action_scaled[0], total_timesteps)
+            writer.add_scalar("train.rl.action.scaled_vr", rosagent.rl_action_scaled[1], total_timesteps)
+        else:
+            writer.add_scalar("train.rl.action.absvl", np.abs(rosagent.rl_action_clean[0]), total_timesteps)
+            writer.add_scalar("train.rl.action.absvr", np.abs(rosagent.rl_action_clean[1]), total_timesteps)
+            writer.add_scalar("train.rl.action.vl", rosagent.rl_action_clean[0], total_timesteps)
+            writer.add_scalar("train.rl.action.vr", rosagent.rl_action_clean[1], total_timesteps)
+            rl_action_scaled_clean = 0.5 * (rosagent.rl_action_clean + 1)
+            writer.add_scalar("train.rl.action.scaled_vl", rl_action_scaled_clean[0], total_timesteps)
+            writer.add_scalar("train.rl.action.scaled_vr", rl_action_scaled_clean[1], total_timesteps)
+            
         if episode_timesteps >= args.env_timesteps:
             done = True
 

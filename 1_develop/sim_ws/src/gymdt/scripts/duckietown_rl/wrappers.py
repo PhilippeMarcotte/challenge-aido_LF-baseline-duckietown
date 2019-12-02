@@ -3,6 +3,26 @@ from gym import spaces
 import numpy as np
 
 
+class MotionBlurWrapper(gym.ObservationWrapper):
+    """
+    Simulate the motion blur (unstatefully), simulated in the AIDO Challenge Interface
+    """
+
+    def __init__(self, env=None, window_size=20):
+        from collections import deque
+        gym.ObservationWrapper.__init__(self, env)
+
+    def observation(self, observation):
+        import cv2
+        size = 10
+
+        kernel_motion_blur = np.zeros((size, size))
+        kernel_motion_blur[int((size-1)/2), :] = np.ones(size)
+        kernel_motion_blur = kernel_motion_blur / size
+
+        # applying the kernel to the input image
+        return cv2.filter2D(observation, -1, kernel_motion_blur)
+
 class ResizeWrapper(gym.ObservationWrapper):
     def __init__(self, env=None, shape=(120, 160, 3)):
         super(ResizeWrapper, self).__init__(env)
