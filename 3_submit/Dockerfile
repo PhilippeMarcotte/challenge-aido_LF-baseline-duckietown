@@ -20,11 +20,12 @@ COPY lf_slim.launch ./
 ## Uncomment these to build your own catkin_ws
 #### START CUSTOM CATKIN_WS ####
 
-# RUN /bin/bash -c "mkdir -p custom_ws/src/"
+RUN /bin/bash -c "mkdir -p custom_ws/src/"
 
 ## Copy or init your packages in here
 COPY lane_pp custom_ws/src/lane_pp
 COPY rl_model custom_ws/src/rl_model
+ENV MODEL_PATH /workspace/custom_ws/src/rl_model/models
 RUN chmod +x custom_ws/src/rl_model/scripts/rl_model_node.py
 RUN chmod +x custom_ws/src/lane_pp/scripts/lane_pp_node.py
 
