@@ -12,6 +12,8 @@ def imgWrapper(state):
     state_hi=np.max(state)
     state = (state - state_lo) / (state_hi - state_lo)
 
+    state = (state * 255).astype(np.uint8)
+
     return state.transpose(2, 0, 1)
 
 
