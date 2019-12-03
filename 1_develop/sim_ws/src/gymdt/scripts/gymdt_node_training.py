@@ -11,7 +11,6 @@ from duckietown_rl.ddpg import DDPG
 from duckietown_rl.args import get_ddpg_args_train
 from duckietown_rl.utils import seed, evaluate_policy, ReplayBuffer 
 from duckietown_rl.wrappers import DtRewardWrapper, ActionWrapper, SteeringToWheelVelWrapper, MotionBlurWrapper
-from duckietown_rl.object_wrappers import imgWrapper
 
 from collections import deque
 
@@ -275,7 +274,7 @@ if __name__ == '__main__':
         episode_reward += reward
 
         # Store data in replay buffer
-        replay_buffer.add(imgWrapper(obs), imgWrapper(new_obs), rosagent.controller_action, rosagent.rl_action, reward, done_bool)
+        replay_buffer.add(obs, new_obs, rosagent.controller_action, rosagent.rl_action, reward, done_bool)
 
         episode_timesteps += 1
         total_timesteps += 1

@@ -3,6 +3,7 @@ import random
 import gym
 import numpy as np
 import torch
+from object_wrappers import normalizeWrapper, cropTransposeWrapper
 
 
 def seed(seed):
@@ -22,6 +23,8 @@ class ReplayBuffer(object):
 
     # Expects tuples of (state, next_state, action, reward, done)
     def add(self, state, next_state, controller_action, action, reward, done):
+        state = cropTransposeWrapper(state)
+        next_state = cropTransposeWrapper(next_state)
         if len(self.storage) < self.max_size:
             self.storage.append((state, next_state, controller_action, action, reward, done))
         else:
@@ -36,7 +39,8 @@ class ReplayBuffer(object):
 
         for i in ind:
             state, next_state, controller_action, action, reward, done = self.storage[i]
-
+            state = normalizeWrapper(state)
+            next_state = normalizeWrapper(next_state)
             if flat:
                 states.append(np.array(state, copy=False).flatten())
                 next_states.append(np.array(next_state, copy=False).flatten())

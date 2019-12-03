@@ -3,9 +3,18 @@ from gym import spaces
 import numpy as np
 import rospy
 
-def imgWrapper(state):
+def cropTransposeWrapper(state):
     from PIL import Image
 
+    return np.array(Image.fromarray(state.astype(np.uint8)).resize((120, 160))).transpose(2, 0, 1)
+
+def normalizeWrapper(state):
+    state_lo=np.min(state)
+    state_hi=np.max(state)
+    return (state - state_lo) / (state_hi - state_lo)
+
+def imgWrapper(state):
+    from PIL import Image
     state = np.array(Image.fromarray(state.astype(np.uint8)).resize((120, 160)))
 
     state_lo=np.min(state)
