@@ -104,11 +104,10 @@ class ROSAgent(object):
             #         size=self.action_space.shape[0])
             #     self.rl_action += noise.clip(self.action_space.low, self.action_space.high)
         
-        self.rl_action_scaled = 0.5 * (self.rl_action + 1)
+        self.rl_action_scaled = self.rl_action #0.5 * (self.rl_action + 1)
         self.action = self.controller_action + self.rl_action_scaled
         self.updated = True
         self.callback_processed = True
-        rospy.logerr("Predict: {}".format(time.time() - start))
 
     def _publish_info(self):
         """
@@ -286,16 +285,16 @@ if __name__ == '__main__':
             writer.add_scalar("train.rl.action.absvr", np.abs(rosagent.rl_action[1]), total_timesteps)
             writer.add_scalar("train.rl.action.vl", rosagent.rl_action[0], total_timesteps)
             writer.add_scalar("train.rl.action.vr", rosagent.rl_action[1], total_timesteps)
-            writer.add_scalar("train.rl.action.scaled_vl", rosagent.rl_action_scaled[0], total_timesteps)
-            writer.add_scalar("train.rl.action.scaled_vr", rosagent.rl_action_scaled[1], total_timesteps)
+            # writer.add_scalar("train.rl.action.scaled_vl", rosagent.rl_action_scaled[0], total_timesteps)
+            # writer.add_scalar("train.rl.action.scaled_vr", rosagent.rl_action_scaled[1], total_timesteps)
         else:
             writer.add_scalar("train.rl.action.absvl", np.abs(rosagent.rl_action_clean[0]), total_timesteps)
             writer.add_scalar("train.rl.action.absvr", np.abs(rosagent.rl_action_clean[1]), total_timesteps)
             writer.add_scalar("train.rl.action.vl", rosagent.rl_action_clean[0], total_timesteps)
             writer.add_scalar("train.rl.action.vr", rosagent.rl_action_clean[1], total_timesteps)
-            rl_action_scaled_clean = 0.5 * (rosagent.rl_action_clean + 1)
-            writer.add_scalar("train.rl.action.scaled_vl", rl_action_scaled_clean[0], total_timesteps)
-            writer.add_scalar("train.rl.action.scaled_vr", rl_action_scaled_clean[1], total_timesteps)
+            # rl_action_scaled_clean = 0.5 * (rosagent.rl_action_clean + 1)
+            # writer.add_scalar("train.rl.action.scaled_vl", rl_action_scaled_clean[0], total_timesteps)
+            # writer.add_scalar("train.rl.action.scaled_vr", rl_action_scaled_clean[1], total_timesteps)
             
         if episode_timesteps >= args.env_timesteps:
             done = True
