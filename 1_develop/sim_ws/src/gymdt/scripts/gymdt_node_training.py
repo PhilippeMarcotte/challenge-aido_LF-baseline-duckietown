@@ -11,6 +11,8 @@ from duckietown_rl.ddpg import DDPG
 from duckietown_rl.args import get_ddpg_args_train
 from duckietown_rl.utils import seed, evaluate_policy, ReplayBuffer 
 from duckietown_rl.wrappers import DtRewardWrapper, ActionWrapper, SteeringToWheelVelWrapper, MotionBlurWrapper
+import json
+
 
 from collections import deque
 
@@ -28,6 +30,7 @@ from sensor_msgs.msg import CompressedImage, CameraInfo
 from gymdt.msg import Twist2DStamped, WheelsCmdStamped, LanePose
 import numpy as np
 import os
+import shutil
 import cv2
 from tensorboardX import SummaryWriter
 
@@ -78,6 +81,7 @@ class ROSAgent(object):
         self.policy = DDPG(state_dim, action_dim, max_action)
 
     def _ik_action_cb(self, msg):
+        start = time.time()
         """
         Callback to listen to last outputted action from inverse_kinematics node
         Stores it and sustains same action until new message published on topic
@@ -104,6 +108,7 @@ class ROSAgent(object):
         self.action = self.controller_action + self.rl_action_scaled
         self.updated = True
         self.callback_processed = True
+        rospy.logerr("Predict: {}".format(time.time() - start))
 
     def _publish_info(self):
         """
@@ -181,14 +186,27 @@ if __name__ == '__main__':
     rosagent.init_policy(state_dim, action_dim, max_action)
     # policy = DDPG(state_dim, action_dim, max_action)
 
-    replay_buffer = ReplayBuffer(args.replay_buffer_max_size)
+    if args.replay_buffer_path:
+        with open("/duckietown/sim_ws/steps.json") as f:
+            steps = json.load(f)
+        total_timesteps = steps["total_timesteps"]
+        rosagent.total_timesteps = total_timesteps
+        rosagent.policy.load("DDPG_{}_{}".format(args.seed, total_timesteps), "/duckietown/catkin_ws/pytorch_models")
+        replay_buffer = ReplayBuffer(args.replay_buffer_max_size, args.replay_buffer_path, total_timesteps)
+        
+        timesteps_since_eval = steps["timesteps_since_eval"]
+        episode_num = steps["episode_num"]
+        done = False
+        episode_reward = 0
 
-
-    total_timesteps = 0
-    timesteps_since_eval = 0
-    episode_num = 0
-    done = True
-    episode_reward = None
+        evaluations = np.load("/duckietown/catkin_ws/results/{}.npz".format(file_name))["evaluations"]
+    else:
+        replay_buffer = ReplayBuffer(args.replay_buffer_max_size)
+        total_timesteps = 0
+        timesteps_since_eval = 0
+        episode_num = 0
+        done = True
+        episode_reward = None
     env_counter = 0
     obs = env.reset()
 
@@ -199,8 +217,9 @@ if __name__ == '__main__':
     rospy.logerr("STARTING")
 
     # Evaluate untrained policy
-    evaluations= [] #[evaluate_policy(env, rosagent, device)]
-    # writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
+    if not args.replay_buffer_path:
+        evaluations = [evaluate_policy(env, rosagent, device)]
+        writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
     time_avg = deque(maxlen=10000)
     while total_timesteps < args.max_timesteps:
         start = time.time()
@@ -210,8 +229,10 @@ if __name__ == '__main__':
                     total_timesteps, episode_num, episode_timesteps, episode_reward, 
                     np.average(time_avg), np.average(time_avg) * (args.max_timesteps - total_timesteps) / 3600.0))
                 if total_timesteps > args.start_timesteps:
+                    start = time.time()
                     rosagent.policy.train(replay_buffer, episode_timesteps, args.batch_size, args.discount, args.tau, 
                     only_critic=False)
+                    rospy.logerr("training: {}".format(time.time() - start))
 
             # Evaluate episode
             if timesteps_since_eval >= args.eval_freq:
@@ -219,10 +240,19 @@ if __name__ == '__main__':
                 evaluations.append(evaluate_policy(env, rosagent, device))
                 writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
                 rospy.logerr("Policy evaluation: %f" % (evaluations[-1]))
-
+                
                 if args.save_models:
-                    rosagent.policy.save(file_name, directory="/duckietown/catkin_ws/pytorch_models")
-                np.savez("/duckietown/catkin_ws/results/{}.npz".format(file_name),evaluations)
+                    rosagent.policy.save(file_name + "_{}".format(total_timesteps), directory="/duckietown/catkin_ws/pytorch_models")
+
+                    steps = {"total_timesteps": total_timesteps,
+                            "episode_num": episode_num,
+                            "timesteps_since_eval": timesteps_since_eval}
+                    with open("/duckietown/sim_ws/steps.json", "w+") as f:
+                        f.write(json.dumps(steps))
+                    
+                    shutil.copy("/duckietown/catkin_ws/results/tensorboard", "/duckietown/catkin_ws/results/tensorboard_{}".format(total_timesteps))
+
+                np.savez("/duckietown/catkin_ws/results/{}.npz".format(file_name), evaluations=evaluations)
 
             # Reset environment
             env_counter += 1

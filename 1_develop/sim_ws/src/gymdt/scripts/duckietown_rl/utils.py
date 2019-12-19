@@ -3,8 +3,10 @@ import random
 import gym
 import numpy as np
 import torch
-from object_wrappers import normalizeWrapper, cropTransposeWrapper
-
+from .object_wrappers import normalizeWrapper, cropTransposeWrapper
+from pathlib import Path
+import os
+import json
 
 def seed(seed):
     torch.manual_seed(seed)
@@ -17,9 +19,37 @@ def seed(seed):
 
 # Simple replay buffer
 class ReplayBuffer(object):
-    def __init__(self, max_size=10000):
+    def __init__(self, max_size=10000, replay_buffer_path=None, replay_buffer_size=None):
         self.storage = []
         self.max_size = max_size
+        self.path = Path("/duckietown/sim_ws/replay_buffer")
+        self.path.mkdir(exist_ok=True)
+    
+    def load(self, replay_buffer_path, replay_buffer_size):
+        for i in range(min(replay_buffer_size, self.max_size)):
+            directory = self.path / "{:06d}".format(i)
+            state = np.load(directory / "state.npy")
+            next_state = np.load(directory / "next_state.npy")
+            with (directory / "data.json") as f:
+                data = json.load(f)
+                controller_action = np.asarray(data["controller_action"])
+                action = np.asarray(data["action"])
+                reward = data["reward"]
+                done = bool(data["done"])
+                self.storage.append((state, next_state, controller_action, action, reward, done))
+
+    def dump(self, timestep, state, next_state, controller_action, action, reward, done):
+        directory = self.path / "{:06d}".format(timestep)
+        directory.mkdir(exist_ok=True)
+
+        np.save(directory / "state", state)
+        np.save(directory / "next_state", next_state)
+        data = {"controller_action": controller_action.tolist(),
+                "action": action.tolist(),
+                "reward": reward,
+                "done": done}
+        with (directory / "data.json").open() as f:
+            f.write(json.dumps(data))
 
     # Expects tuples of (state, next_state, action, reward, done)
     def add(self, state, next_state, controller_action, action, reward, done):
@@ -27,10 +57,13 @@ class ReplayBuffer(object):
         next_state = cropTransposeWrapper(next_state)
         if len(self.storage) < self.max_size:
             self.storage.append((state, next_state, controller_action, action, reward, done))
+            self.dump(len(self.storage) - 1, state, next_state, controller_action, action, reward, done)
         else:
             # Remove random element in the memory beforea adding a new one
-            self.storage.pop(random.randrange(len(self.storage)))
+            i = random.randrange(len(self.storage))
+            self.storage.pop(i)
             self.storage.append((state, next_state, controller_action, action, reward, done))
+            self.dump(i, state, next_state, controller_action, action, reward, done)
 
 
     def sample(self, batch_size=100, flat=True):
