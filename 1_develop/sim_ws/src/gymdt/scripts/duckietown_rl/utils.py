@@ -48,7 +48,7 @@ class ReplayBuffer(object):
                 "action": action.tolist(),
                 "reward": reward,
                 "done": done}
-        with (directory / "data.json", "w+").open() as f:
+        with (directory / "data.json").open("w+") as f:
             f.write(json.dumps(data))
 
     # Expects tuples of (state, next_state, action, reward, done)

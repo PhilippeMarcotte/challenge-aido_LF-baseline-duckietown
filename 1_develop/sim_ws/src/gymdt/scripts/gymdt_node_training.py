@@ -12,7 +12,7 @@ from duckietown_rl.args import get_ddpg_args_train
 from duckietown_rl.utils import seed, evaluate_policy, ReplayBuffer 
 from duckietown_rl.wrappers import DtRewardWrapper, ActionWrapper, SteeringToWheelVelWrapper, MotionBlurWrapper
 import json
-
+import traceback
 
 from collections import deque
 
@@ -81,7 +81,6 @@ class ROSAgent(object):
         self.policy = DDPG(state_dim, action_dim, max_action)
 
     def _ik_action_cb(self, msg):
-        start = time.time()
         """
         Callback to listen to last outputted action from inverse_kinematics node
         Stores it and sustains same action until new message published on topic
@@ -97,12 +96,12 @@ class ROSAgent(object):
             self.rl_action = self.policy.predict(np.array(self.obs))
             self.rl_action_clean = self.rl_action.copy()
 
-            # if self.args.expl_noise != 0 and not self.evaluation:
-            #     noise = np.random.normal(
-            #         0,
-            #         self.args.expl_noise,
-            #         size=self.action_space.shape[0])
-            #     self.rl_action += noise.clip(self.action_space.low, self.action_space.high)
+            if self.args.expl_noise != 0 and not self.evaluation:
+                noise = np.random.normal(
+                    0,
+                    self.args.expl_noise,
+                    size=self.action_space.shape[0])
+                self.rl_action += noise.clip(self.action_space.low, self.action_space.high)
         
         self.rl_action_scaled = self.rl_action #0.5 * (self.rl_action + 1)
         self.action = self.controller_action + self.rl_action_scaled
@@ -197,8 +196,9 @@ if __name__ == '__main__':
         episode_num = steps["episode_num"]
         done = False
         episode_reward = 0
+        episode_timesteps = 0
 
-        evaluations = np.load("/duckietown/catkin_ws/results/{}.npz".format(file_name))["evaluations"]
+        evaluations = np.load("/duckietown/catkin_ws/results/{}.npz".format(file_name))["evaluations"].tolist()
     else:
         replay_buffer = ReplayBuffer(args.replay_buffer_max_size)
         total_timesteps = 0
@@ -228,10 +228,8 @@ if __name__ == '__main__':
                     total_timesteps, episode_num, episode_timesteps, episode_reward, 
                     np.average(time_avg), np.average(time_avg) * (args.max_timesteps - total_timesteps) / 3600.0))
                 if total_timesteps > args.start_timesteps:
-                    start = time.time()
                     rosagent.policy.train(replay_buffer, episode_timesteps, args.batch_size, args.discount, args.tau, 
                     only_critic=False)
-                    rospy.logerr("training: {}".format(time.time() - start))
 
             # Evaluate episode
             if timesteps_since_eval >= args.eval_freq:
@@ -248,8 +246,10 @@ if __name__ == '__main__':
                             "timesteps_since_eval": timesteps_since_eval}
                     with open("/duckietown/sim_ws/steps.json", "w+") as f:
                         f.write(json.dumps(steps))
-                    
-                    shutil.copy("/duckietown/catkin_ws/results/tensorboard", "/duckietown/catkin_ws/results/tensorboard_{}".format(total_timesteps))
+                    try:
+                        shutil.copytree("/duckietown/catkin_ws/results/tensorboard", "/duckietown/catkin_ws/results/tensorboard_{}".format(total_timesteps))
+                    except Exception as e:
+                        traceback.print_exc()    
 
                 np.savez("/duckietown/catkin_ws/results/{}.npz".format(file_name), evaluations=evaluations)
 
