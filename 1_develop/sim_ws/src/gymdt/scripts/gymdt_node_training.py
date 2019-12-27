@@ -87,9 +87,11 @@ class ROSAgent(object):
         """
         self.controller_action = np.array([msg.vel_left, msg.vel_right])
         # Select action randomly or according to policy
-        if self.total_timesteps < self.args.start_timesteps and not self.evaluation:
+        if self.total_timesteps < self.args.exploration_timesteps and not self.evaluation:
+            rospy.logerr_once("BURN IN")
+            self.rl_action = np.array([0.0, 0.0])
+        elif self.total_timesteps < self.args.start_timesteps and not self.evaluation:
             rospy.logerr_once("RANDOM")
-            # self.rl_action = self.action_space.sample()
             self.rl_action = np.array([np.random.uniform(-1, 1), np.random.uniform(-1, 1)])
         else:
             rospy.logerr_once("RL")
@@ -196,6 +198,7 @@ if __name__ == '__main__':
         episode_num = steps["episode_num"]
         done = False
         episode_reward = 0
+        reward_diff = 0
         episode_timesteps = 0
 
         evaluations = np.load("/duckietown/catkin_ws/results/{}.npz".format(file_name))["evaluations"].tolist()
@@ -206,6 +209,7 @@ if __name__ == '__main__':
         episode_num = 0
         done = True
         episode_reward = None
+        reward_diff = None
     env_counter = 0
     obs = env.reset()
 
@@ -261,8 +265,10 @@ if __name__ == '__main__':
             # env = wrappers.Monitor(env, './gym_results', video_callable=lambda episode_id: True, force=True)
             if episode_reward is not None:
                 writer.add_scalar("train.reward", episode_reward, total_timesteps)
+                writer,add_scalar("train.reward_diff", reward_diff, total_timesteps)
             done = False
             episode_reward = 0
+            reward_diff = 0
             episode_timesteps = 0
             episode_num += 1
 
@@ -271,6 +277,8 @@ if __name__ == '__main__':
         # Perform action
         # rescale action from -1 and 1 to 0 and 1
         new_obs, reward, done, _ = env.step(rosagent.action)
+        critic_reward = rosagent.policy.critic(obs, rosagent.rl_action)
+        reward_diff += abs(reward - critic_reward)
         rosagent.publish_img(new_obs)
 
         writer.add_scalar("train.controller.action.absvl", np.abs(rosagent.controller_action[0]), total_timesteps)

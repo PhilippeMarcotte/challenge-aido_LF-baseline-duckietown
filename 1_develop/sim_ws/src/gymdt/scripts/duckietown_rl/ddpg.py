@@ -164,7 +164,7 @@ class DDPG(object):
         self.actor_target = ActorCNN(action_dim, max_action).to(device)
 
         self.actor_target.load_state_dict(self.actor.state_dict())
-        self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=1e-4)
+        self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=1e-6)
 
         self.critic = CriticCNN(action_dim).to(device)
         if critic_chkp:
@@ -209,7 +209,6 @@ class DDPG(object):
 
             # Get current Q estimate
             current_Q = self.critic(state, action)
-
             self.writer.add_scalar("train.rl.critic.reward", torch.mean(current_Q).cpu().data.numpy(), it)
 
             # Compute critic loss
