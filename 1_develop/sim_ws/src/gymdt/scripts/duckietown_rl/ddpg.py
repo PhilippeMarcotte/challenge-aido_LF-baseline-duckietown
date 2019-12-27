@@ -154,7 +154,7 @@ class CriticCNN(nn.Module):
 
 
 class DDPG(object):
-    def __init__(self, state_dim, action_dim, max_action, net_type="cnn", critic_chkp=None):
+    def __init__(self, state_dim, action_dim, max_action, net_type="cnn", critic_chkp=None, writer=None):
         super(DDPG, self).__init__()
         assert net_type in ["cnn", "pid"]
 
@@ -174,6 +174,8 @@ class DDPG(object):
     
         self.critic_target.load_state_dict(self.critic.state_dict())
         self.critic_optimizer = torch.optim.Adam(self.critic.parameters())
+
+        self.writer = writer
 
     def predict(self, state):
         # just making sure the state has the correct format, otherwise the prediction doesn't work
@@ -208,17 +210,21 @@ class DDPG(object):
             # Get current Q estimate
             current_Q = self.critic(state, action)
 
+            self.writer.add_scalar("train.rl.critic.reward", torch.mean(current_Q).cpu().data.numpy(), it)
+
             # Compute critic loss
             critic_loss = F.mse_loss(current_Q, target_Q)
+            self.writer.add_scalar("train.rl.critic.loss", critic_loss.cpu().data.numpy(), it)
 
             # Optimize the critic
             self.critic_optimizer.zero_grad()
             critic_loss.backward()
             self.critic_optimizer.step()
 
+            # Compute actor loss
             if not only_critic:
-                # Compute actor loss
                 actor_loss = -self.critic(state, self.actor(state)).mean()
+                self.writer.add_scalar("train.rl.actor.loss", actor_loss.cpu().data.numpy(), it)
 
                 # Optimize the actor
                 self.actor_optimizer.zero_grad()

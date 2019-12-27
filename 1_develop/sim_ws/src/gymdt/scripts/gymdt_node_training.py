@@ -77,8 +77,8 @@ class ROSAgent(object):
         rospy.init_node('GymDuckietown', log_level=rospy.INFO)
         self.evaluation = False
 
-    def init_policy(self, state_dim, action_dim, max_action):
-        self.policy = DDPG(state_dim, action_dim, max_action)
+    def init_policy(self, state_dim, action_dim, max_action, writer):
+        self.policy = DDPG(state_dim, action_dim, max_action, writer=writer)
 
     def _ik_action_cb(self, msg):
         """
@@ -181,7 +181,7 @@ if __name__ == '__main__':
     max_action = float(env.action_space.high[0])
 
     # Initialize policy
-    rosagent.init_policy(state_dim, action_dim, max_action)
+    rosagent.init_policy(state_dim, action_dim, max_action, writer)
     # policy = DDPG(state_dim, action_dim, max_action)
 
     if args.replay_buffer_path:
@@ -227,9 +227,7 @@ if __name__ == '__main__':
                 rospy.logerr(("Total T: %d Episode Num: %d Episode T: %d Reward: %f Duration: %.2f s Time Left: %.2f h") % (
                     total_timesteps, episode_num, episode_timesteps, episode_reward, 
                     np.average(time_avg), np.average(time_avg) * (args.max_timesteps - total_timesteps) / 3600.0))
-                if total_timesteps > args.start_timesteps:
-                    rosagent.policy.train(replay_buffer, episode_timesteps, args.batch_size, args.discount, args.tau, 
-                    only_critic=False)
+                rosagent.policy.train(replay_buffer, episode_timesteps, args.batch_size, args.discount, args.tau, only_critic=total_timesteps < args.start_timesteps)
 
             # Evaluate episode
             if timesteps_since_eval >= args.eval_freq:
