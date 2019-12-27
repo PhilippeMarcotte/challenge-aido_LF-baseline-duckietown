@@ -141,6 +141,7 @@ class CriticCNN(nn.Module):
         self.lin3 = nn.Linear(128, 1)
 
     def forward(self, states, actions):
+        import rospy
         x = self.bn1(self.lr(self.conv1(states)))
         x = self.bn2(self.lr(self.conv2(x)))
         x = self.bn3(self.lr(self.conv3(x)))
@@ -190,6 +191,15 @@ class DDPG(object):
             state = torch.FloatTensor(np.expand_dims(state, axis=0)).to(device)
         
         return self.actor(state).cpu().data.numpy().flatten()
+    
+    def critize(self, state, action):
+        state = imgWrapper(state)
+        assert state.shape[0] == 3
+
+        state = torch.FloatTensor(np.expand_dims(state, axis=0)).to(device)
+        action = torch.FloatTensor(np.expand_dims(action, axis=0)).to(device)
+        
+        return self.critic(state, action).cpu().data.numpy().flatten()
 
     def train(self, replay_buffer, iterations, batch_size=64, discount=0.99, tau=0.001, only_critic=False):
         for it in range(iterations):

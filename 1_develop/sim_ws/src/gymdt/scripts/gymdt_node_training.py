@@ -220,9 +220,9 @@ if __name__ == '__main__':
     rospy.logerr("STARTING")
 
     # Evaluate untrained policy
-    if not args.replay_buffer_path:
-        evaluations = [evaluate_policy(env, rosagent, device)]
-        writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
+    # if not args.replay_buffer_path:
+    #     evaluations = [evaluate_policy(env, rosagent, device)]
+    #     writer.add_scalar("eval.reward", evaluations[-1], total_timesteps)
     time_avg = deque(maxlen=10000)
     while total_timesteps < args.max_timesteps:
         start = time.time()
@@ -264,8 +264,8 @@ if __name__ == '__main__':
             # env.reset_video_recorder()
             # env = wrappers.Monitor(env, './gym_results', video_callable=lambda episode_id: True, force=True)
             if episode_reward is not None:
-                writer.add_scalar("train.reward", episode_reward, total_timesteps)
-                writer,add_scalar("train.reward_diff", reward_diff, total_timesteps)
+                writer.add_scalar("train.episode_reward", episode_reward, total_timesteps)
+                writer.add_scalar("train.episode_reward_diff", reward_diff, total_timesteps)
             done = False
             episode_reward = 0
             reward_diff = 0
@@ -277,7 +277,9 @@ if __name__ == '__main__':
         # Perform action
         # rescale action from -1 and 1 to 0 and 1
         new_obs, reward, done, _ = env.step(rosagent.action)
-        critic_reward = rosagent.policy.critic(obs, rosagent.rl_action)
+        writer.add_scalar("train.reward", reward, total_timesteps)
+        critic_reward = rosagent.policy.critize(obs, rosagent.rl_action)
+        writer.add_scalar("train.critic_reward", critic_reward, total_timesteps)
         reward_diff += abs(reward - critic_reward)
         rosagent.publish_img(new_obs)
 
