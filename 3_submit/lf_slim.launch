@@ -52,7 +52,8 @@
         
         <group if="$(arg /lane_following/rl_model)">
                 <remap from="rl_model_node/corrected_image/compressed" to="camera_node/image/compressed"/>
-                <remap from="rl_model_node/car_cmd" to="lane_controller_node/car_cmd"/>
+                <remap from="rl_model_node/corrected_wheels_cmd" to="wheels_driver_node/wheels_cmd"/>
+                <remap from="rl_model_node/wheels_cmd" to="kinematics_node/wheels_cmd"/>
                 <include file="$(find rl_model)/launch/rl_model_node.launch">
                     <arg name="veh" value="$(arg veh)"/>
                 </include>
@@ -102,8 +103,7 @@
     <!-- End Lane Control -->
 
     <!-- Kinematics: turns chassis-level commands into wheels-level commands and chassis-level velocities -->
-    <remap from="kinematics_node/car_cmd" to="rl_model_node/corrected_car_cmd"/>
-    <remap from="kinematics_node/wheels_cmd" to="wheels_driver_node/wheels_cmd"/>
+    <remap from="kinematics_node/car_cmd" to="lane_controller_node/car_cmd"/>
     <include file="$(find dagu_car)/launch/kinematics_node.launch">
         <arg name="veh" value="$(arg veh)"/>
         <arg name="param_file_name" value="$(arg param_file_name)"/>

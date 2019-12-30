@@ -6,6 +6,7 @@ import rospy
 from duckietown_msgs.msg import Twist2DStamped, LanePose, WheelsCmdStamped, BoolStamped, FSMState, StopLineReading, SegmentList
 import time
 import numpy as np
+from collections import deque
 
 class lane_controller(object):
 
@@ -14,6 +15,13 @@ class lane_controller(object):
         self.lane_reading = None
         self.last_ms = None
         self.pub_counter = 0
+
+        self.std_x = deque(maxlen=5)
+        self.std_y = deque(maxlen=5)
+        self.std_x.append(1)
+        self.std_y.append(1)
+        
+        
 
         # TODO-TAL weird double initialisation
         self.velocity_to_m_per_s = 0.67
@@ -35,11 +43,12 @@ class lane_controller(object):
 
 
         # Subscriptions
-#         self.sub_lane_reading = rospy.Subscriber("~lineseglist_out", SegmentList, self.PurePursuit, queue_size=1)
+        # self.sub_lane = rospy.Subscriber("~lineseglist_out", SegmentList, self.line_stats, queue_size=1)
+
         self.sub_lane_reading = rospy.Subscriber("~seglist_filtered", SegmentList, self.PurePursuit, queue_size=1)
         #/default/lane_filter_node/seglist_filtered
         #/default/ground_projection/lineseglist_out
-        self.sub_error_reading = rospy.Subscriber("~lane_pose", LanePose, self.error_reader, queue_size=1)
+        # self.sub_error_reading = rospy.Subscriber("~lane_pose", LanePose, self.error_reader, queue_size=1)
 
         self.sub_obstacle_avoidance_pose = rospy.Subscriber("~obstacle_avoidance_pose", LanePose, self.PoseHandling, "obstacle_avoidance",queue_size=1)
         self.sub_obstacle_detected = rospy.Subscriber("~obstacle_detected", BoolStamped, self.setFlag, "obstacle_detected", queue_size=1)
@@ -76,10 +85,18 @@ class lane_controller(object):
         self.stop_line_distance = 999
         self.stop_line_detected = False
         
-    def error_reader(self, pose_msg):
-        self.timestamp_err = rospy.Time.now().secs
-        self.cross_track_err = pose_msg.d - self.d_offset
-        self.heading_err = pose_msg.phi
+    def line_stats(self, seg_list):
+        if seg_list.segments:
+            mean_x = []
+            mean_y = []
+            for line in seg_list.segments:
+                mean_x.append((line.points[0].x+line.points[1].x)/2)
+                mean_y.append((line.points[0].y+line.points[1].y)/2)
+
+            self.std_x.append(np.std(mean_x))
+            self.std_y.append(np.std(mean_y))
+
+        
 
     def PurePursuit(self, seg_list):
         car_control_msg = Twist2DStamped()
@@ -90,12 +107,25 @@ class lane_controller(object):
         y_white=0
         y_yellow=0
         L=0.4
-#         rospy.loginfo(seg_list)
+
+        # x_w1=0
+        # x_w2=0
+        # y_w1=0
+        # y_w2=0
+
+        # x_y1=0
+        # x_y2=0
+        # y_y1=0
+        # y_y2=0
+        # list_x = []
+        # rospy.loginfo(seg_list)
+        # self.line_stats(seg_list)
         for line in seg_list.segments:
             mean_x  =(line.points[0].x+line.points[1].x)/2
             mean_y  =(line.points[0].y+line.points[1].y)/2
             d       =(mean_x**2+mean_y**2)**0.5
             factor  =1/(1+np.abs(d-L)**2)
+            # list_x.append(mean_x)
             if d<10*L:
     #             rospy.loginfo(line.color == line.YELLOW)
                 if line.color == line.WHITE:
@@ -107,34 +137,111 @@ class lane_controller(object):
                     x_yellow+=factor*mean_x
                     y_yellow+=factor*mean_y
                     n_yellow+=factor
-    #                 rospy.loginfo(line)
-
-        if n_yellow>0:
+#                 rospy.loginfo(line)
+        
+        
+        if n_yellow > 0:
             x_mean=(x_yellow/n_yellow)
             y_mean=(y_yellow/n_yellow)-0.15
-        elif n_white>0:
+        elif n_white > 0:
             x_mean=(x_white/n_white)
             y_mean=(y_white/n_white)+0.15
         else:
-            x_mean=0
-            y_mean=0.05
+            x_mean = 0.05
+            y_mean = 0
+        
+        # coeff = (np.mean(self.std_y)/np.mean(self.std_x)-0.95)**2
+        # rospy.loginfo('std_x {}'.format(np.mean(self.std_x)))
+        # rospy.loginfo('std_y {}'.format(np.mean(self.std_y)))
+        # rospy.loginfo('ratio {}'.format(coeff))
+#         for line in seg_list.segments:
+
+#             if np.linalg.norm([line.points[1].x, line.points[1].y])<np.linalg.norm([line.points[0].x, line.points[0].y]):
+#                 p1=line.points[1]
+#                 p2=line.points[0]
+#             else:
+#                 p1=line.points[0]
+#                 p2=line.points[1]
+
+
+#             mean_x  =(line.points[0].x+line.points[1].x)/2
+#             mean_y  =(line.points[0].y+line.points[1].y)/2
+#             d       =(mean_x**2+mean_y**2)**0.5
+#             factor  =1/(1+np.abs(d-L)**2)
+#             # if d<10*L:
+#     #             rospy.loginfo(line.color == line.YELLOW)
+#             if line.color == line.WHITE:
+#                 x_w1+=factor*p1.x
+#                 x_w2+=factor*p2.x
+
+#                 y_w1+=factor*p1.y
+#                 y_w2+=factor*p2.y
+
+#                 n_white+=factor
+# #                 rospy.loginfo(line)
+#             elif line.color == line.YELLOW:
+#                 x_y1+=factor*p1.x
+#                 x_y2+=factor*p2.x
+
+#                 y_y1+=factor*p1.y
+#                 y_y2+=factor*p2.y
+
+#                 n_yellow+=factor
+# #                 rospy.loginfo(line)
+
+#         if n_yellow>0:
+#             xm1 = (x_y1/n_yellow)
+#             xm2 = (x_y2/n_yellow)
+            
+#             ym1 = (y_y1/n_yellow)
+#             ym2 = (y_y2/n_yellow)
+
+#             line_vec = np.matmul(np.array([xm2-xm1, ym2-ym1]), np.array([[0, -1], [1, 0]]))
+#             # print(line_vec)
+#             line_vec = 0.15*line_vec/np.linalg.norm(line_vec)
+
+#             x_mean = (xm1+xm2)/2 + line_vec[0]
+#             y_mean = (ym1+ym2)/2 + line_vec[1]
+
+#         elif n_white>0:
+#             xm1 = (x_w1/n_white)
+#             xm2 = (x_w2/n_white)
+            
+#             ym1 = (y_w1/n_white)
+#             ym2 = (y_w2/n_white)
+
+#             line_vec = np.matmul(np.array([xm2-xm1, ym2-ym1]), np.array([[0, 1], [-1, 0]]))
+#             # print(line_vec)
+#             line_vec = 0.15*line_vec/np.linalg.norm(line_vec)
+
+#             x_mean = (xm1+xm2)/2 + line_vec[0]
+#             y_mean = (ym1+ym2)/2 + line_vec[1]
+#         else:
+#             x_mean=0
+#             y_mean=0
 
                    
         
         alpha=np.arctan2(y_mean,x_mean)
+
         lookup_distance = (x_mean**2+y_mean**2)**0.5
-        if lookup_distance<L:
-            lookup_distance=L
+        # print(lookup_distance, x_mean, y_mean)
+
+        # lookup_distance = max(lookup_distance, 2*L/3)
+        
+        if lookup_distance < 0.87 * L:
+            lookup_distance = 0.87 * L
+
         
 #         if car_control_msg.v > self.actuator_limits.v:
 #             car_control_msg.v = self.actuator_limits.v
         
 #         omega=f_cor*2*self.v_bar*np.sin(alpha)/lookup_distance
-        v=(lookup_distance/L)*0.25
+        v=(lookup_distance/L)*0.28
 
-        omega=2*v*np.sin(alpha)/(lookup_distance+np.exp(-6))
+        omega=1.7*v*np.sin(alpha)/(lookup_distance+np.exp(-6))
         car_control_msg.v=v
-        
+
 #         apply magic conversion factors
         car_control_msg.v = car_control_msg.v * self.velocity_to_m_per_s
         omega = omega * self.omega_to_rad_per_s

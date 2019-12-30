@@ -19,7 +19,7 @@ COPY solution.py ./
 
 # For ROS Agent - Additional Files
 COPY rosagent.py ./
-COPY lf_slim.launch ./
+COPY lf_slim.launch ./lf_slim.launch
 
 ## Uncomment these to build your own catkin_ws
 #### START CUSTOM CATKIN_WS ####
@@ -28,9 +28,11 @@ RUN /bin/bash -c "mkdir -p custom_ws/src/"
 
 ## Copy or init your packages in here
 COPY lane_pp custom_ws/src/lane_pp
-COPY rl_model custom_ws/src/rl_model
-ENV MODEL_PATH /workspace/custom_ws/src/rl_model/models
-RUN chmod +x custom_ws/src/rl_model/scripts/rl_model_node.py
+COPY vehicle_avoidance custom_ws/src/vehicle_avoidance
+# ENV MODEL_PATH /workspace/custom_ws/src/rl_model/models
+RUN chmod +x custom_ws/src/vehicle_avoidance/src/vehicle_avoidance_control_node.py
+RUN chmod +x custom_ws/src/vehicle_avoidance/src/vehicle_filter_node.py
+RUN chmod +x custom_ws/src/vehicle_avoidance/src/vehicle_detection_node.py
 RUN chmod +x custom_ws/src/lane_pp/scripts/lane_pp_node.py
 
 ## Do not change the below line! This ensures that your workspace is overlayed on top of the Duckietown stack!
