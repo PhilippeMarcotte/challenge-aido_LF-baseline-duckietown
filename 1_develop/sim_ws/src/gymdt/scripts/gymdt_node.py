@@ -7,18 +7,22 @@ if '/duckietown/' not in sys.path:
 from utils.ros_helpers import launch_env
 
 import rospy
-from sensor_msgs.msg import CompressedImage, CameraInfo
-from gymdt.msg import Twist2DStamped, WheelsCmdStamped
+from sensor_msgs.msg import CompressedImage, CameraInfo, Image
+from std_msgs.msg import UInt8MultiArray
+from gymdt.msg import Twist2DStamped, WheelsCmdStamped, NumpyArray
+from rospy.numpy_msg import numpy_msg
 import numpy as np
 import os
 import cv2
+from cv_bridge import CvBridge
 
 
 class ROSAgent(object):
     def __init__(self):
         # Get the vehicle name, which comes in as HOSTNAME
         self.vehicle = os.getenv('HOSTNAME')
-
+        
+        self.bridge = CvBridge()
         self.ik_action_sub = rospy.Subscriber('/{}/wheels_driver_node/wheels_cmd'.format(
             self.vehicle), WheelsCmdStamped, self._ik_action_cb)
         # Place holder for the action, which will be read by the agent in solution.py
@@ -29,6 +33,9 @@ class ROSAgent(object):
         # since image out of simulator is currently rectified
         self.cam_pub = rospy.Publisher('/{}/camera_node/image/compressed'.format(
             self.vehicle), CompressedImage, queue_size=10)
+
+        self.cam_pub_orig = rospy.Publisher('/{}/camera_node/image/original'.format(
+            self.vehicle), Image, queue_size=10)
 
         # Publisher for camera info - needed for the ground_projection
         self.cam_info_pub = rospy.Publisher('/{}/camera_info_topic'.format(
@@ -67,8 +74,12 @@ class ROSAgent(object):
         img_msg.format = "jpeg"
         contig = cv2.cvtColor(np.ascontiguousarray(obs), cv2.COLOR_BGR2RGB)
         img_msg.data = np.array(cv2.imencode('.jpg', contig)[1]).tostring()
+        
+        img_msg_orig = self.bridge.cv2_to_imgmsg(obs)
+        img_msg_orig.data = contig
 
         self.cam_pub.publish(img_msg)
+        self.cam_pub_orig.publish(img_msg_orig)
         self._publish_info()
 
 if __name__ == '__main__':
