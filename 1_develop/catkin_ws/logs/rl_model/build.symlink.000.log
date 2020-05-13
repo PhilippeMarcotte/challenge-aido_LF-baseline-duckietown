@@ -1,0 +1,3 @@
+Symlinking /duckietown/catkin_ws/devel/share/rl_model/cmake/rl_modelConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/share/rl_model/cmake/rl_modelConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/rl_model.pc

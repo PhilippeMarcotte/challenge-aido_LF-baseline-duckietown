@@ -1,0 +1,63 @@
+In file included from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/apriltag.h:42:0[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/include/apriltags2_ros/common_functions.h:67[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/src/common_functions.cpp:32[m[K:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:[m[K In function ‘[01m[Kint matd_is_vector_len(const matd_t*, int)[m[K’:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:39:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && [01;35m[Ka->nrows == len[m[K) || (a->ncols == len && a->nrows == 1);
+                              [01;35m[K~~~~~~~~~^~~~~~[m[K
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:60:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && a->nrows == len) || ([01;35m[Ka->ncols == len[m[K && a->nrows == 1);
+                                                   [01;35m[K~~~~~~~~~^~~~~~[m[K
+In file included from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/apriltag.h:42:0[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/include/apriltags2_ros/common_functions.h:67[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/include/apriltags2_ros/single_image_detector.h:47[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/src/single_image_detector.cpp:32[m[K:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:[m[K In function ‘[01m[Kint matd_is_vector_len(const matd_t*, int)[m[K’:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:39:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && [01;35m[Ka->nrows == len[m[K) || (a->ncols == len && a->nrows == 1);
+                              [01;35m[K~~~~~~~~~^~~~~~[m[K
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:60:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && a->nrows == len) || ([01;35m[Ka->ncols == len[m[K && a->nrows == 1);
+                                                   [01;35m[K~~~~~~~~~^~~~~~[m[K
+In file included from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/apriltag.h:42:0[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/include/apriltags2_ros/common_functions.h:67[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/src/apriltags2_ros_single_image_client_node.cpp:32[m[K:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:[m[K In function ‘[01m[Kint matd_is_vector_len(const matd_t*, int)[m[K’:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:39:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && [01;35m[Ka->nrows == len[m[K) || (a->ncols == len && a->nrows == 1);
+                              [01;35m[K~~~~~~~~~^~~~~~[m[K
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:60:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && a->nrows == len) || ([01;35m[Ka->ncols == len[m[K && a->nrows == 1);
+                                                   [01;35m[K~~~~~~~~~^~~~~~[m[K
+In file included from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/apriltag.h:42:0[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/include/apriltags2_ros/common_functions.h:67[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/include/apriltags2_ros/continuous_detector.h:47[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/src/continuous_detector.cpp:32[m[K:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:[m[K In function ‘[01m[Kint matd_is_vector_len(const matd_t*, int)[m[K’:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:39:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && [01;35m[Ka->nrows == len[m[K) || (a->ncols == len && a->nrows == 1);
+                              [01;35m[K~~~~~~~~~^~~~~~[m[K
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:60:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && a->nrows == len) || ([01;35m[Ka->ncols == len[m[K && a->nrows == 1);
+                                                   [01;35m[K~~~~~~~~~^~~~~~[m[K
+In file included from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/apriltag.h:42:0[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/include/apriltags2_ros/common_functions.h:67[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/src/apriltags2_ros_single_image_server_node.cpp:32[m[K:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:[m[K In function ‘[01m[Kint matd_is_vector_len(const matd_t*, int)[m[K’:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:39:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && [01;35m[Ka->nrows == len[m[K) || (a->ncols == len && a->nrows == 1);
+                              [01;35m[K~~~~~~~~~^~~~~~[m[K
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:60:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && a->nrows == len) || ([01;35m[Ka->ncols == len[m[K && a->nrows == 1);
+                                                   [01;35m[K~~~~~~~~~^~~~~~[m[K
+In file included from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/apriltag.h:42:0[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/include/apriltags2_ros/common_functions.h:67[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/include/apriltags2_ros/continuous_detector.h:47[m[K,
+                 from [01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2_ros/src/apriltags2_ros_continuous_node.cpp:32[m[K:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:[m[K In function ‘[01m[Kint matd_is_vector_len(const matd_t*, int)[m[K’:
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:39:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && [01;35m[Ka->nrows == len[m[K) || (a->ncols == len && a->nrows == 1);
+                              [01;35m[K~~~~~~~~~^~~~~~[m[K
+[01m[K/duckietown/catkin_ws/src/dt-core/packages/apriltags2_ros/apriltags2/include/common/matd.h:280:60:[m[K [01;35m[Kwarning: [m[Kcomparison between signed and unsigned integer expressions [[01;35m[K-Wsign-compare[m[K]
+     return (a->ncols == 1 && a->nrows == len) || ([01;35m[Ka->ncols == len[m[K && a->nrows == 1);
+                                                   [01;35m[K~~~~~~~~~^~~~~~[m[K

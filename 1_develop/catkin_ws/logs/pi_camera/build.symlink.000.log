@@ -1,0 +1,4 @@
+Symlinking /duckietown/catkin_ws/devel/share/pi_camera/cmake/pi_cameraConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/share/pi_camera/cmake/pi_cameraConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/python2.7/dist-packages/pi_camera/__init__.py
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/pi_camera.pc

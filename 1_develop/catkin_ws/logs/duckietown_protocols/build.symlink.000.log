@@ -1,0 +1,3 @@
+Symlinking /duckietown/catkin_ws/devel/share/duckietown_protocols/cmake/duckietown_protocolsConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/share/duckietown_protocols/cmake/duckietown_protocolsConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/duckietown_protocols.pc

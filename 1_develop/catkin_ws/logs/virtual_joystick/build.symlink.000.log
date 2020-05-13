@@ -1,0 +1,4 @@
+Symlinking /duckietown/catkin_ws/devel/share/virtual_joystick/cmake/virtual_joystickConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/share/virtual_joystick/cmake/virtual_joystickConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/python2.7/dist-packages/virtual_joystick/__init__.py
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/virtual_joystick.pc

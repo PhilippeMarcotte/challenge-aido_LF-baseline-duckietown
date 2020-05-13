@@ -1,0 +1,535 @@
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_DroneMode[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_DroneMode
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_ObstacleImageDetection[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_ObstacleImageDetection
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_Rects[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_Rects
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_LEDDetection[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_LEDDetection
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_SegmentList[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_SegmentList
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_DuckiebotLED[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_DuckiebotLED
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_TurnIDandType[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_TurnIDandType
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_BoolStamped[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_BoolStamped
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_AntiInstagramTransform_CB[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_AntiInstagramTransform_CB
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_LanePose[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_LanePose
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_CoordinationClearance[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_CoordinationClearance
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_SetVariable[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_SetVariable
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_Trajectory[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_Trajectory
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_CarControl[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_CarControl
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_WheelsCmdDBV2Stamped[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_WheelsCmdDBV2Stamped
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_ToFstatus[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_ToFstatus
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_Segment[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_Segment
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_AntiInstagramHealth[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_SetFSMState[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_SetFSMState
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_AntiInstagramHealth
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_py[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_VehicleCorners[0m
+[  0%] Built target sensor_msgs_generate_messages_py
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_SceneSegments[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_VehicleCorners
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_KinematicsParameters[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_SceneSegments
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_ThetaDotSample[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_KinematicsParameters
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_Pixel[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_ThetaDotSample
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_MaintenanceState[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_Pixel
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_MaintenanceState
+[35m[1mScanning dependencies of target std_msgs_generate_messages_py[0m
+[  0%] Built target std_msgs_generate_messages_py
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_LightSensor[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_LEDDetectionDebugInfo[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_LightSensor
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_AprilTagDetection[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_LEDDetectionDebugInfo
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_Twist2DStamped[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_AprilTagDetection
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_Twist2DStamped
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_ObstacleProjectedDetectionList[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_SourceTargetNodes[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_ObstacleProjectedDetectionList
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_SourceTargetNodes
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_LEDDetectionArray[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_IntersectionPose[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_LEDDetectionArray
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_LFstatus[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_IntersectionPose
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_AprilTagExtended[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_LFstatus
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_AprilTagExtended
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_FSMState[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_SignalsDetection[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_FSMState
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_SignalsDetection
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_DroneControl[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_AntiInstagramTransform[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_DroneControl
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_SetValue[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_AntiInstagramTransform
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_AprilTagsWithInfos[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_SetValue
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_AprilTagsWithInfos
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_Rect[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_ToFStamped[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_Rect
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_ToFStamped
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_ParamTuner[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_ObstacleProjectedDetection[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_ObstacleProjectedDetection
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_ParamTuner
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_py[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_SignalsDetectionETHZ17[0m
+[  0%] Built target geometry_msgs_generate_messages_py
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_IntersectionPoseImgDebug[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_SignalsDetectionETHZ17
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_VehiclePose[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_IntersectionPoseImgDebug
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_WheelsCmdStamped[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_VehiclePose
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_LEDInterpreter[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_WheelsCmdStamped
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_Vsample[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_LEDInterpreter
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_StopLineReading[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_Vsample
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_ChangePattern[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_StopLineReading
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_WheelsCmd[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_ChangePattern
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_ObstacleImageDetectionList[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_WheelsCmd
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_Pose2DStamped[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_ObstacleImageDetectionList
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_ObstacleType[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_Pose2DStamped
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_ObstacleType
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_LEDPattern[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_SensorsStatus[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_LEDPattern
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_SensorsStatus
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_AprilTagDetectionArray[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_GetVariable[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_AprilTagDetectionArray
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_GetVariable
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_IntersectionPoseImg[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_LineFollowerStamped[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_IntersectionPoseImg
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_LineFollowerStamped
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_SetCustomLEDPattern[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_Vector2D[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_Vector2D
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_SetCustomLEDPattern
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_KinematicsWeights[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_CoordinationSignal[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_KinematicsWeights
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_CoordinationSignal
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_IMUstatus[0m
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_EncoderStamped[0m
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_IMUstatus
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_EncoderStamped
+[35m[1mScanning dependencies of target _duckietown_msgs_generate_messages_check_deps_TagInfo[0m
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_eus[0m
+[  0%] Built target sensor_msgs_generate_messages_eus
+[  0%] Built target _duckietown_msgs_generate_messages_check_deps_TagInfo
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_eus[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_eus[0m
+[  0%] Built target geometry_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target std_msgs_generate_messages_lisp[0m
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_lisp[0m
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target sensor_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_lisp[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_nodejs[0m
+[  0%] Built target geometry_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_nodejs
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_nodejs[0m
+[  0%] Built target geometry_msgs_generate_messages_nodejs
+[  0%] Built target sensor_msgs_generate_messages_nodejs
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_cpp[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_cpp[0m
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target sensor_msgs_generate_messages_cpp
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_cpp[0m
+[35m[1mScanning dependencies of target duckietown_msgs_generate_messages_py[0m
+[35m[1mScanning dependencies of target duckietown_msgs_generate_messages_eus[0m
+[  0%] Built target geometry_msgs_generate_messages_cpp
+[  0%] [34m[1mGenerating Python from MSG duckietown_msgs/WheelsCmd[0m
+[  0%] [34m[1mGenerating EusLisp code from duckietown_msgs/WheelsCmd.msg[0m
+[35m[1mScanning dependencies of target duckietown_msgs_generate_messages_lisp[0m
+[  1%] [34m[1mGenerating Lisp code from duckietown_msgs/WheelsCmd.msg[0m
+[  1%] [34m[1mGenerating Lisp code from duckietown_msgs/SceneSegments.msg[0m
+[  1%] [34m[1mGenerating EusLisp code from duckietown_msgs/SceneSegments.msg[0m
+[  1%] [34m[1mGenerating Python from MSG duckietown_msgs/SceneSegments[0m
+[  1%] [34m[1mGenerating Lisp code from duckietown_msgs/ObstacleImageDetectionList.msg[0m
+[  2%] [34m[1mGenerating EusLisp code from duckietown_msgs/ObstacleImageDetectionList.msg[0m
+[  2%] [34m[1mGenerating Lisp code from duckietown_msgs/ObstacleType.msg[0m
+[  3%] [34m[1mGenerating EusLisp code from duckietown_msgs/ObstacleType.msg[0m
+[  3%] [34m[1mGenerating Lisp code from duckietown_msgs/WheelsCmdStamped.msg[0m
+[  4%] [34m[1mGenerating Python from MSG duckietown_msgs/ObstacleImageDetectionList[0m
+[  4%] [34m[1mGenerating Lisp code from duckietown_msgs/StopLineReading.msg[0m
+[  4%] [34m[1mGenerating EusLisp code from duckietown_msgs/WheelsCmdStamped.msg[0m
+[  4%] [34m[1mGenerating Lisp code from duckietown_msgs/ThetaDotSample.msg[0m
+[  4%] [34m[1mGenerating Python from MSG duckietown_msgs/ObstacleType[0m
+[  4%] [34m[1mGenerating EusLisp code from duckietown_msgs/StopLineReading.msg[0m
+[  4%] [34m[1mGenerating Lisp code from duckietown_msgs/AprilTagDetection.msg[0m
+[  5%] [34m[1mGenerating Lisp code from duckietown_msgs/ObstacleProjectedDetectionList.msg[0m
+[  6%] [34m[1mGenerating EusLisp code from duckietown_msgs/ThetaDotSample.msg[0m
+[  6%] [34m[1mGenerating Python from MSG duckietown_msgs/WheelsCmdStamped[0m
+[  6%] [34m[1mGenerating Lisp code from duckietown_msgs/CoordinationSignal.msg[0m
+[  6%] [34m[1mGenerating EusLisp code from duckietown_msgs/AprilTagDetection.msg[0m
+[  6%] [34m[1mGenerating Lisp code from duckietown_msgs/Vsample.msg[0m
+[  6%] [34m[1mGenerating Python from MSG duckietown_msgs/StopLineReading[0m
+[  7%] [34m[1mGenerating Lisp code from duckietown_msgs/LEDPattern.msg[0m
+[  7%] [34m[1mGenerating EusLisp code from duckietown_msgs/ObstacleProjectedDetectionList.msg[0m
+[  7%] [34m[1mGenerating Lisp code from duckietown_msgs/EncoderStamped.msg[0m
+[  7%] [34m[1mGenerating Lisp code from duckietown_msgs/Vector2D.msg[0m
+[  7%] [34m[1mGenerating EusLisp code from duckietown_msgs/CoordinationSignal.msg[0m
+[  8%] [34m[1mGenerating Python from MSG duckietown_msgs/ThetaDotSample[0m
+[  8%] [34m[1mGenerating Lisp code from duckietown_msgs/DroneMode.msg[0m
+[  9%] [34m[1mGenerating EusLisp code from duckietown_msgs/Vsample.msg[0m
+[ 10%] [34m[1mGenerating Lisp code from duckietown_msgs/CoordinationClearance.msg[0m
+[ 10%] [34m[1mGenerating Python from MSG duckietown_msgs/AprilTagDetection[0m
+[ 10%] [34m[1mGenerating EusLisp code from duckietown_msgs/LEDPattern.msg[0m
+[ 10%] [34m[1mGenerating Lisp code from duckietown_msgs/ToFStamped.msg[0m
+[ 10%] [34m[1mGenerating Lisp code from duckietown_msgs/AprilTagsWithInfos.msg[0m
+[ 10%] [34m[1mGenerating EusLisp code from duckietown_msgs/EncoderStamped.msg[0m
+[ 10%] [34m[1mGenerating Python from MSG duckietown_msgs/ObstacleProjectedDetectionList[0m
+[ 10%] [34m[1mGenerating Lisp code from duckietown_msgs/VehicleCorners.msg[0m
+[ 11%] [34m[1mGenerating Lisp code from duckietown_msgs/LEDDetectionDebugInfo.msg[0m
+[ 12%] [34m[1mGenerating EusLisp code from duckietown_msgs/Vector2D.msg[0m
+[ 12%] [34m[1mGenerating Lisp code from duckietown_msgs/IntersectionPoseImg.msg[0m
+[ 12%] [34m[1mGenerating Python from MSG duckietown_msgs/CoordinationSignal[0m
+[ 12%] [34m[1mGenerating EusLisp code from duckietown_msgs/DroneMode.msg[0m
+[ 12%] [34m[1mGenerating Lisp code from duckietown_msgs/AntiInstagramTransform.msg[0m
+[ 13%] [34m[1mGenerating Lisp code from duckietown_msgs/SignalsDetection.msg[0m
+[ 13%] [34m[1mGenerating EusLisp code from duckietown_msgs/CoordinationClearance.msg[0m
+[ 14%] [34m[1mGenerating Python from MSG duckietown_msgs/Vsample[0m
+[ 14%] [34m[1mGenerating Lisp code from duckietown_msgs/FSMState.msg[0m
+[ 14%] [34m[1mGenerating EusLisp code from duckietown_msgs/ToFStamped.msg[0m
+[ 14%] [34m[1mGenerating Lisp code from duckietown_msgs/VehiclePose.msg[0m
+[ 14%] [34m[1mGenerating Lisp code from duckietown_msgs/AprilTagExtended.msg[0m
+[ 15%] [34m[1mGenerating EusLisp code from duckietown_msgs/AprilTagsWithInfos.msg[0m
+[ 15%] [34m[1mGenerating Python from MSG duckietown_msgs/LEDPattern[0m
+[ 16%] [34m[1mGenerating Lisp code from duckietown_msgs/LEDInterpreter.msg[0m
+[ 16%] [34m[1mGenerating EusLisp code from duckietown_msgs/VehicleCorners.msg[0m
+[ 16%] [34m[1mGenerating Lisp code from duckietown_msgs/IntersectionPose.msg[0m
+[ 16%] [34m[1mGenerating Lisp code from duckietown_msgs/LEDDetectionArray.msg[0m
+[ 16%] [34m[1mGenerating Python from MSG duckietown_msgs/EncoderStamped[0m
+[ 16%] [34m[1mGenerating EusLisp code from duckietown_msgs/LEDDetectionDebugInfo.msg[0m
+[ 16%] [34m[1mGenerating Lisp code from duckietown_msgs/SourceTargetNodes.msg[0m
+[ 17%] [34m[1mGenerating Lisp code from duckietown_msgs/LineFollowerStamped.msg[0m
+[ 17%] [34m[1mGenerating Lisp code from duckietown_msgs/KinematicsWeights.msg[0m
+[ 17%] [34m[1mGenerating Lisp code from duckietown_msgs/DroneControl.msg[0m
+[ 18%] [34m[1mGenerating EusLisp code from duckietown_msgs/IntersectionPoseImg.msg[0m
+[ 19%] [34m[1mGenerating Lisp code from duckietown_msgs/WheelsCmdDBV2Stamped.msg[0m
+[ 20%] [34m[1mGenerating Python from MSG duckietown_msgs/Vector2D[0m
+[ 20%] [34m[1mGenerating Lisp code from duckietown_msgs/Trajectory.msg[0m
+[ 20%] [34m[1mGenerating EusLisp code from duckietown_msgs/AntiInstagramTransform.msg[0m
+[ 20%] [34m[1mGenerating Lisp code from duckietown_msgs/LanePose.msg[0m
+[ 20%] [34m[1mGenerating Lisp code from duckietown_msgs/MaintenanceState.msg[0m
+[ 21%] [34m[1mGenerating Lisp code from duckietown_msgs/Twist2DStamped.msg[0m
+[ 21%] [34m[1mGenerating EusLisp code from duckietown_msgs/SignalsDetection.msg[0m
+[ 21%] [34m[1mGenerating Lisp code from duckietown_msgs/AntiInstagramTransform_CB.msg[0m
+[ 21%] [34m[1mGenerating Python from MSG duckietown_msgs/DroneMode[0m
+[ 21%] [34m[1mGenerating Lisp code from duckietown_msgs/TurnIDandType.msg[0m
+[ 22%] [34m[1mGenerating Lisp code from duckietown_msgs/Pixel.msg[0m
+[ 22%] [34m[1mGenerating EusLisp code from duckietown_msgs/FSMState.msg[0m
+[ 22%] [34m[1mGenerating Python from MSG duckietown_msgs/CoordinationClearance[0m
+[ 23%] [34m[1mGenerating EusLisp code from duckietown_msgs/VehiclePose.msg[0m
+[ 23%] [34m[1mGenerating Lisp code from duckietown_msgs/Pose2DStamped.msg[0m
+[ 23%] [34m[1mGenerating EusLisp code from duckietown_msgs/AprilTagExtended.msg[0m
+[ 23%] [34m[1mGenerating Lisp code from duckietown_msgs/SignalsDetectionETHZ17.msg[0m
+[ 23%] [34m[1mGenerating Lisp code from duckietown_msgs/LightSensor.msg[0m
+[ 23%] [34m[1mGenerating Python from MSG duckietown_msgs/ToFStamped[0m
+[ 23%] [34m[1mGenerating EusLisp code from duckietown_msgs/LEDInterpreter.msg[0m
+[ 25%] [34m[1mGenerating Python from MSG duckietown_msgs/AprilTagsWithInfos[0m
+[ 26%] [34m[1mGenerating Lisp code from duckietown_msgs/KinematicsParameters.msg[0m
+[ 26%] [34m[1mGenerating Lisp code from duckietown_msgs/IntersectionPoseImgDebug.msg[0m
+[ 26%] [34m[1mGenerating EusLisp code from duckietown_msgs/IntersectionPose.msg[0m
+[ 26%] [34m[1mGenerating Python from MSG duckietown_msgs/VehicleCorners[0m
+[ 26%] [34m[1mGenerating Python from MSG duckietown_msgs/LEDDetectionDebugInfo[0m
+[ 26%] [34m[1mGenerating Lisp code from duckietown_msgs/SegmentList.msg[0m
+[ 27%] [34m[1mGenerating EusLisp code from duckietown_msgs/LEDDetectionArray.msg[0m
+[ 27%] [34m[1mGenerating Lisp code from duckietown_msgs/DuckiebotLED.msg[0m
+[ 27%] [34m[1mGenerating Python from MSG duckietown_msgs/IntersectionPoseImg[0m
+[ 28%] [34m[1mGenerating Python from MSG duckietown_msgs/AntiInstagramTransform[0m
+[ 29%] [34m[1mGenerating Lisp code from duckietown_msgs/AprilTagDetectionArray.msg[0m
+[ 29%] [34m[1mGenerating EusLisp code from duckietown_msgs/SourceTargetNodes.msg[0m
+[ 29%] [34m[1mGenerating Lisp code from duckietown_msgs/ObstacleProjectedDetection.msg[0m
+[ 29%] [34m[1mGenerating Python from MSG duckietown_msgs/SignalsDetection[0m
+[ 29%] [34m[1mGenerating EusLisp code from duckietown_msgs/LineFollowerStamped.msg[0m
+[ 29%] [34m[1mGenerating Lisp code from duckietown_msgs/Rect.msg[0m
+[ 30%] [34m[1mGenerating Lisp code from duckietown_msgs/LEDDetection.msg[0m
+[ 31%] [34m[1mGenerating EusLisp code from duckietown_msgs/KinematicsWeights.msg[0m
+[ 31%] [34m[1mGenerating Lisp code from duckietown_msgs/ParamTuner.msg[0m
+[ 31%] [34m[1mGenerating Lisp code from duckietown_msgs/Rects.msg[0m
+[ 31%] [34m[1mGenerating Python from MSG duckietown_msgs/FSMState[0m
+[ 31%] [34m[1mGenerating Lisp code from duckietown_msgs/ObstacleImageDetection.msg[0m
+[ 32%] [34m[1mGenerating Lisp code from duckietown_msgs/Segment.msg[0m
+[ 32%] [34m[1mGenerating EusLisp code from duckietown_msgs/DroneControl.msg[0m
+[ 32%] [34m[1mGenerating Lisp code from duckietown_msgs/TagInfo.msg[0m
+[ 32%] [34m[1mGenerating Lisp code from duckietown_msgs/AntiInstagramHealth.msg[0m
+[ 33%] [34m[1mGenerating Python from MSG duckietown_msgs/VehiclePose[0m
+[ 33%] [34m[1mGenerating Lisp code from duckietown_msgs/CarControl.msg[0m
+[ 33%] [34m[1mGenerating EusLisp code from duckietown_msgs/WheelsCmdDBV2Stamped.msg[0m
+[ 34%] [34m[1mGenerating Lisp code from duckietown_msgs/BoolStamped.msg[0m
+[ 34%] [34m[1mGenerating EusLisp code from duckietown_msgs/Trajectory.msg[0m
+[ 34%] [34m[1mGenerating Lisp code from duckietown_msgs/SetFSMState.srv[0m
+[ 34%] [34m[1mGenerating Lisp code from duckietown_msgs/LFstatus.srv[0m
+[ 34%] [34m[1mGenerating Python from MSG duckietown_msgs/AprilTagExtended[0m
+[ 35%] [34m[1mGenerating EusLisp code from duckietown_msgs/LanePose.msg[0m
+[ 35%] [34m[1mGenerating EusLisp code from duckietown_msgs/MaintenanceState.msg[0m
+[ 36%] [34m[1mGenerating Lisp code from duckietown_msgs/SensorsStatus.srv[0m
+[ 36%] [34m[1mGenerating EusLisp code from duckietown_msgs/Twist2DStamped.msg[0m
+[ 36%] [34m[1mGenerating Lisp code from duckietown_msgs/SetCustomLEDPattern.srv[0m
+[ 36%] [34m[1mGenerating EusLisp code from duckietown_msgs/AntiInstagramTransform_CB.msg[0m
+[ 36%] [34m[1mGenerating Python from MSG duckietown_msgs/LEDInterpreter[0m
+[ 36%] [34m[1mGenerating Lisp code from duckietown_msgs/ToFstatus.srv[0m
+[ 36%] [34m[1mGenerating Python from MSG duckietown_msgs/IntersectionPose[0m
+[ 37%] [34m[1mGenerating EusLisp code from duckietown_msgs/TurnIDandType.msg[0m
+[ 37%] [34m[1mGenerating Lisp code from duckietown_msgs/GetVariable.srv[0m
+[ 39%] [34m[1mGenerating Lisp code from duckietown_msgs/IMUstatus.srv[0m
+[ 39%] [34m[1mGenerating Python from MSG duckietown_msgs/LEDDetectionArray[0m
+[ 39%] [34m[1mGenerating EusLisp code from duckietown_msgs/Pixel.msg[0m
+[ 39%] [34m[1mGenerating Python from MSG duckietown_msgs/SourceTargetNodes[0m
+[ 39%] [34m[1mGenerating Lisp code from duckietown_msgs/ChangePattern.srv[0m
+[ 39%] [34m[1mGenerating EusLisp code from duckietown_msgs/Pose2DStamped.msg[0m
+[ 39%] [34m[1mGenerating Lisp code from duckietown_msgs/SetVariable.srv[0m
+[ 39%] [34m[1mGenerating Lisp code from duckietown_msgs/SetValue.srv[0m
+[ 39%] [34m[1mGenerating Python from MSG duckietown_msgs/LineFollowerStamped[0m
+[ 40%] [34m[1mGenerating EusLisp code from duckietown_msgs/SignalsDetectionETHZ17.msg[0m
+[ 40%] [34m[1mGenerating Python from MSG duckietown_msgs/KinematicsWeights[0m
+[ 40%] Built target duckietown_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target duckietown_msgs_generate_messages_nodejs[0m
+[ 41%] [34m[1mGenerating Javascript code from duckietown_msgs/WheelsCmd.msg[0m
+[ 41%] [34m[1mGenerating EusLisp code from duckietown_msgs/LightSensor.msg[0m
+[ 41%] [34m[1mGenerating EusLisp code from duckietown_msgs/KinematicsParameters.msg[0m
+[ 42%] [34m[1mGenerating Python from MSG duckietown_msgs/DroneControl[0m
+[ 42%] [34m[1mGenerating Javascript code from duckietown_msgs/SceneSegments.msg[0m
+[ 42%] [34m[1mGenerating EusLisp code from duckietown_msgs/IntersectionPoseImgDebug.msg[0m
+[35m[1mScanning dependencies of target duckietown_msgs_generate_messages_cpp[0m
+[ 42%] [34m[1mGenerating C++ code from duckietown_msgs/WheelsCmd.msg[0m
+[ 42%] [34m[1mGenerating Javascript code from duckietown_msgs/ObstacleImageDetectionList.msg[0m
+[ 42%] [34m[1mGenerating Python from MSG duckietown_msgs/WheelsCmdDBV2Stamped[0m
+[ 43%] [34m[1mGenerating EusLisp code from duckietown_msgs/SegmentList.msg[0m
+[ 44%] [34m[1mGenerating Javascript code from duckietown_msgs/ObstacleType.msg[0m
+[ 44%] [34m[1mGenerating Javascript code from duckietown_msgs/WheelsCmdStamped.msg[0m
+[ 44%] [34m[1mGenerating EusLisp code from duckietown_msgs/DuckiebotLED.msg[0m
+[ 44%] [34m[1mGenerating Python from MSG duckietown_msgs/Trajectory[0m
+[ 44%] [34m[1mGenerating Javascript code from duckietown_msgs/StopLineReading.msg[0m
+[ 44%] [34m[1mGenerating C++ code from duckietown_msgs/SceneSegments.msg[0m
+[ 44%] [34m[1mGenerating EusLisp code from duckietown_msgs/AprilTagDetectionArray.msg[0m
+[ 44%] [34m[1mGenerating Javascript code from duckietown_msgs/ThetaDotSample.msg[0m
+[ 45%] [34m[1mGenerating Python from MSG duckietown_msgs/LanePose[0m
+[ 46%] [34m[1mGenerating Javascript code from duckietown_msgs/AprilTagDetection.msg[0m
+[ 46%] [34m[1mGenerating EusLisp code from duckietown_msgs/ObstacleProjectedDetection.msg[0m
+[ 46%] [34m[1mGenerating C++ code from duckietown_msgs/ObstacleImageDetectionList.msg[0m
+[ 46%] [34m[1mGenerating Javascript code from duckietown_msgs/ObstacleProjectedDetectionList.msg[0m
+[ 47%] [34m[1mGenerating EusLisp code from duckietown_msgs/Rect.msg[0m
+[ 47%] [34m[1mGenerating Python from MSG duckietown_msgs/MaintenanceState[0m
+[ 47%] [34m[1mGenerating Javascript code from duckietown_msgs/CoordinationSignal.msg[0m
+[ 47%] [34m[1mGenerating Javascript code from duckietown_msgs/Vsample.msg[0m
+[ 47%] [34m[1mGenerating EusLisp code from duckietown_msgs/LEDDetection.msg[0m
+[ 48%] [34m[1mGenerating C++ code from duckietown_msgs/ObstacleType.msg[0m
+[ 48%] [34m[1mGenerating Python from MSG duckietown_msgs/Twist2DStamped[0m
+[ 50%] [34m[1mGenerating Javascript code from duckietown_msgs/LEDPattern.msg[0m
+[ 50%] [34m[1mGenerating EusLisp code from duckietown_msgs/ParamTuner.msg[0m
+[ 50%] [34m[1mGenerating Javascript code from duckietown_msgs/EncoderStamped.msg[0m
+[ 50%] [34m[1mGenerating Javascript code from duckietown_msgs/Vector2D.msg[0m
+[ 51%] [34m[1mGenerating EusLisp code from duckietown_msgs/Rects.msg[0m
+[ 51%] [34m[1mGenerating Python from MSG duckietown_msgs/AntiInstagramTransform_CB[0m
+[ 51%] [34m[1mGenerating C++ code from duckietown_msgs/WheelsCmdStamped.msg[0m
+[ 52%] [34m[1mGenerating Javascript code from duckietown_msgs/DroneMode.msg[0m
+[ 52%] [34m[1mGenerating EusLisp code from duckietown_msgs/ObstacleImageDetection.msg[0m
+[ 52%] [34m[1mGenerating Javascript code from duckietown_msgs/CoordinationClearance.msg[0m
+[ 53%] [34m[1mGenerating Python from MSG duckietown_msgs/TurnIDandType[0m
+[ 53%] [34m[1mGenerating Javascript code from duckietown_msgs/ToFStamped.msg[0m
+[ 53%] [34m[1mGenerating EusLisp code from duckietown_msgs/Segment.msg[0m
+[ 53%] [34m[1mGenerating C++ code from duckietown_msgs/StopLineReading.msg[0m
+[ 53%] [34m[1mGenerating Javascript code from duckietown_msgs/AprilTagsWithInfos.msg[0m
+[ 53%] [34m[1mGenerating EusLisp code from duckietown_msgs/TagInfo.msg[0m
+[ 53%] [34m[1mGenerating Python from MSG duckietown_msgs/Pixel[0m
+[ 54%] [34m[1mGenerating Javascript code from duckietown_msgs/VehicleCorners.msg[0m
+[ 54%] [34m[1mGenerating C++ code from duckietown_msgs/ThetaDotSample.msg[0m
+[ 55%] [34m[1mGenerating EusLisp code from duckietown_msgs/AntiInstagramHealth.msg[0m
+[ 55%] [34m[1mGenerating Javascript code from duckietown_msgs/LEDDetectionDebugInfo.msg[0m
+[ 55%] [34m[1mGenerating Python from MSG duckietown_msgs/Pose2DStamped[0m
+[ 55%] [34m[1mGenerating Javascript code from duckietown_msgs/IntersectionPoseImg.msg[0m
+[ 55%] [34m[1mGenerating EusLisp code from duckietown_msgs/CarControl.msg[0m
+[ 56%] [34m[1mGenerating C++ code from duckietown_msgs/AprilTagDetection.msg[0m
+[ 57%] [34m[1mGenerating Javascript code from duckietown_msgs/AntiInstagramTransform.msg[0m
+[ 57%] [34m[1mGenerating EusLisp code from duckietown_msgs/BoolStamped.msg[0m
+[ 58%] [34m[1mGenerating Python from MSG duckietown_msgs/SignalsDetectionETHZ17[0m
+[ 58%] [34m[1mGenerating Javascript code from duckietown_msgs/SignalsDetection.msg[0m
+[ 58%] [34m[1mGenerating EusLisp code from duckietown_msgs/SetFSMState.srv[0m
+[ 58%] [34m[1mGenerating Javascript code from duckietown_msgs/FSMState.msg[0m
+[ 58%] [34m[1mGenerating C++ code from duckietown_msgs/ObstacleProjectedDetectionList.msg[0m
+[ 58%] [34m[1mGenerating Python from MSG duckietown_msgs/LightSensor[0m
+[ 58%] [34m[1mGenerating Javascript code from duckietown_msgs/VehiclePose.msg[0m
+[ 59%] [34m[1mGenerating EusLisp code from duckietown_msgs/LFstatus.srv[0m
+[ 60%] [34m[1mGenerating Javascript code from duckietown_msgs/AprilTagExtended.msg[0m
+[ 60%] [34m[1mGenerating EusLisp code from duckietown_msgs/SensorsStatus.srv[0m
+[ 60%] [34m[1mGenerating C++ code from duckietown_msgs/CoordinationSignal.msg[0m
+[ 60%] [34m[1mGenerating Python from MSG duckietown_msgs/KinematicsParameters[0m
+[ 60%] [34m[1mGenerating Javascript code from duckietown_msgs/LEDInterpreter.msg[0m
+[ 60%] [34m[1mGenerating EusLisp code from duckietown_msgs/SetCustomLEDPattern.srv[0m
+[ 60%] [34m[1mGenerating Javascript code from duckietown_msgs/IntersectionPose.msg[0m
+[ 60%] [34m[1mGenerating Javascript code from duckietown_msgs/LEDDetectionArray.msg[0m
+[ 60%] [34m[1mGenerating Python from MSG duckietown_msgs/IntersectionPoseImgDebug[0m
+[ 61%] [34m[1mGenerating EusLisp code from duckietown_msgs/ToFstatus.srv[0m
+[ 62%] [34m[1mGenerating C++ code from duckietown_msgs/Vsample.msg[0m
+[ 63%] [34m[1mGenerating Javascript code from duckietown_msgs/SourceTargetNodes.msg[0m
+[ 63%] [34m[1mGenerating EusLisp code from duckietown_msgs/GetVariable.srv[0m
+[ 63%] [34m[1mGenerating Javascript code from duckietown_msgs/LineFollowerStamped.msg[0m
+[ 64%] [34m[1mGenerating Python from MSG duckietown_msgs/SegmentList[0m
+[ 64%] [34m[1mGenerating Javascript code from duckietown_msgs/KinematicsWeights.msg[0m
+[ 64%] [34m[1mGenerating EusLisp code from duckietown_msgs/IMUstatus.srv[0m
+[ 64%] [34m[1mGenerating C++ code from duckietown_msgs/LEDPattern.msg[0m
+[ 65%] [34m[1mGenerating Javascript code from duckietown_msgs/DroneControl.msg[0m
+[ 65%] [34m[1mGenerating EusLisp code from duckietown_msgs/ChangePattern.srv[0m
+[ 65%] [34m[1mGenerating Python from MSG duckietown_msgs/DuckiebotLED[0m
+[ 65%] [34m[1mGenerating Javascript code from duckietown_msgs/WheelsCmdDBV2Stamped.msg[0m
+[ 66%] [34m[1mGenerating EusLisp code from duckietown_msgs/SetVariable.srv[0m
+[ 66%] [34m[1mGenerating C++ code from duckietown_msgs/EncoderStamped.msg[0m
+[ 66%] [34m[1mGenerating Javascript code from duckietown_msgs/Trajectory.msg[0m
+[ 66%] [34m[1mGenerating Python from MSG duckietown_msgs/AprilTagDetectionArray[0m
+[ 66%] [34m[1mGenerating EusLisp code from duckietown_msgs/SetValue.srv[0m
+[ 66%] [34m[1mGenerating Javascript code from duckietown_msgs/LanePose.msg[0m
+[ 66%] [34m[1mGenerating C++ code from duckietown_msgs/Vector2D.msg[0m
+[ 66%] [34m[1mGenerating EusLisp manifest code for duckietown_msgs[0m
+[ 67%] [34m[1mGenerating Javascript code from duckietown_msgs/MaintenanceState.msg[0m
+[ 67%] [34m[1mGenerating Python from MSG duckietown_msgs/ObstacleProjectedDetection[0m
+[ 67%] [34m[1mGenerating Javascript code from duckietown_msgs/Twist2DStamped.msg[0m
+[ 67%] [34m[1mGenerating Javascript code from duckietown_msgs/AntiInstagramTransform_CB.msg[0m
+[ 68%] [34m[1mGenerating C++ code from duckietown_msgs/DroneMode.msg[0m
+[ 69%] [34m[1mGenerating Python from MSG duckietown_msgs/Rect[0m
+[ 69%] [34m[1mGenerating Javascript code from duckietown_msgs/TurnIDandType.msg[0m
+[ 70%] [34m[1mGenerating Javascript code from duckietown_msgs/Pixel.msg[0m
+[ 70%] [34m[1mGenerating Python from MSG duckietown_msgs/LEDDetection[0m
+[ 70%] [34m[1mGenerating C++ code from duckietown_msgs/CoordinationClearance.msg[0m
+[ 70%] [34m[1mGenerating Javascript code from duckietown_msgs/Pose2DStamped.msg[0m
+[ 70%] [34m[1mGenerating Javascript code from duckietown_msgs/SignalsDetectionETHZ17.msg[0m
+[ 70%] [34m[1mGenerating Python from MSG duckietown_msgs/ParamTuner[0m
+[ 71%] [34m[1mGenerating Javascript code from duckietown_msgs/LightSensor.msg[0m
+[ 71%] [34m[1mGenerating C++ code from duckietown_msgs/ToFStamped.msg[0m
+[ 71%] [34m[1mGenerating Javascript code from duckietown_msgs/KinematicsParameters.msg[0m
+[ 72%] [34m[1mGenerating Python from MSG duckietown_msgs/Rects[0m
+[ 72%] [34m[1mGenerating Javascript code from duckietown_msgs/IntersectionPoseImgDebug.msg[0m
+[ 72%] [34m[1mGenerating Javascript code from duckietown_msgs/SegmentList.msg[0m
+[ 72%] [34m[1mGenerating C++ code from duckietown_msgs/AprilTagsWithInfos.msg[0m
+[ 73%] [34m[1mGenerating Javascript code from duckietown_msgs/DuckiebotLED.msg[0m
+[ 73%] [34m[1mGenerating Python from MSG duckietown_msgs/ObstacleImageDetection[0m
+[ 73%] [34m[1mGenerating Javascript code from duckietown_msgs/AprilTagDetectionArray.msg[0m
+[ 75%] [34m[1mGenerating C++ code from duckietown_msgs/VehicleCorners.msg[0m
+[ 75%] [34m[1mGenerating Python from MSG duckietown_msgs/Segment[0m
+[ 75%] [34m[1mGenerating Javascript code from duckietown_msgs/ObstacleProjectedDetection.msg[0m
+[ 75%] [34m[1mGenerating Javascript code from duckietown_msgs/Rect.msg[0m
+[ 76%] [34m[1mGenerating Javascript code from duckietown_msgs/LEDDetection.msg[0m
+[ 76%] [34m[1mGenerating C++ code from duckietown_msgs/LEDDetectionDebugInfo.msg[0m
+[ 76%] [34m[1mGenerating Python from MSG duckietown_msgs/TagInfo[0m
+[ 76%] [34m[1mGenerating Javascript code from duckietown_msgs/ParamTuner.msg[0m
+[ 76%] [34m[1mGenerating Javascript code from duckietown_msgs/Rects.msg[0m
+[ 77%] [34m[1mGenerating Python from MSG duckietown_msgs/AntiInstagramHealth[0m
+[ 77%] [34m[1mGenerating C++ code from duckietown_msgs/IntersectionPoseImg.msg[0m
+[ 78%] [34m[1mGenerating Javascript code from duckietown_msgs/ObstacleImageDetection.msg[0m
+[ 78%] Built target duckietown_msgs_generate_messages_eus
+[ 78%] [34m[1mGenerating Javascript code from duckietown_msgs/Segment.msg[0m
+[ 78%] [34m[1mGenerating Python from MSG duckietown_msgs/CarControl[0m
+[ 78%] [34m[1mGenerating Python from MSG duckietown_msgs/BoolStamped[0m
+[ 78%] [34m[1mGenerating Javascript code from duckietown_msgs/TagInfo.msg[0m
+[ 79%] [34m[1mGenerating C++ code from duckietown_msgs/AntiInstagramTransform.msg[0m
+[ 79%] [34m[1mGenerating Javascript code from duckietown_msgs/AntiInstagramHealth.msg[0m
+[ 79%] [34m[1mGenerating C++ code from duckietown_msgs/SignalsDetection.msg[0m
+[ 79%] [34m[1mGenerating Python code from SRV duckietown_msgs/SetFSMState[0m
+[ 80%] [34m[1mGenerating Javascript code from duckietown_msgs/CarControl.msg[0m
+[ 80%] [34m[1mGenerating C++ code from duckietown_msgs/FSMState.msg[0m
+[ 80%] [34m[1mGenerating Javascript code from duckietown_msgs/BoolStamped.msg[0m
+[ 80%] [34m[1mGenerating Javascript code from duckietown_msgs/SetFSMState.srv[0m
+[ 80%] [34m[1mGenerating C++ code from duckietown_msgs/VehiclePose.msg[0m
+[ 81%] [34m[1mGenerating Python code from SRV duckietown_msgs/LFstatus[0m
+[ 82%] [34m[1mGenerating Javascript code from duckietown_msgs/LFstatus.srv[0m
+[ 83%] [34m[1mGenerating C++ code from duckietown_msgs/AprilTagExtended.msg[0m
+[ 83%] [34m[1mGenerating Javascript code from duckietown_msgs/SensorsStatus.srv[0m
+[ 83%] [34m[1mGenerating Javascript code from duckietown_msgs/SetCustomLEDPattern.srv[0m
+[ 83%] [34m[1mGenerating C++ code from duckietown_msgs/LEDInterpreter.msg[0m
+[ 83%] [34m[1mGenerating Python code from SRV duckietown_msgs/SensorsStatus[0m
+[ 83%] [34m[1mGenerating Javascript code from duckietown_msgs/ToFstatus.srv[0m
+[ 83%] [34m[1mGenerating C++ code from duckietown_msgs/IntersectionPose.msg[0m
+[ 84%] [34m[1mGenerating Javascript code from duckietown_msgs/GetVariable.srv[0m
+[ 84%] [34m[1mGenerating Python code from SRV duckietown_msgs/SetCustomLEDPattern[0m
+[ 84%] [34m[1mGenerating C++ code from duckietown_msgs/LEDDetectionArray.msg[0m
+[ 84%] [34m[1mGenerating Javascript code from duckietown_msgs/IMUstatus.srv[0m
+[ 84%] [34m[1mGenerating Javascript code from duckietown_msgs/ChangePattern.srv[0m
+[ 85%] [34m[1mGenerating C++ code from duckietown_msgs/SourceTargetNodes.msg[0m
+[ 85%] [34m[1mGenerating Javascript code from duckietown_msgs/SetVariable.srv[0m
+[ 86%] [34m[1mGenerating Python code from SRV duckietown_msgs/ToFstatus[0m
+[ 86%] [34m[1mGenerating C++ code from duckietown_msgs/LineFollowerStamped.msg[0m
+[ 87%] [34m[1mGenerating Javascript code from duckietown_msgs/SetValue.srv[0m
+[ 87%] Built target duckietown_msgs_generate_messages_nodejs
+[ 87%] [34m[1mGenerating C++ code from duckietown_msgs/KinematicsWeights.msg[0m
+[ 87%] [34m[1mGenerating Python code from SRV duckietown_msgs/GetVariable[0m
+[ 87%] [34m[1mGenerating Python code from SRV duckietown_msgs/IMUstatus[0m
+[ 88%] [34m[1mGenerating C++ code from duckietown_msgs/DroneControl.msg[0m
+[ 88%] [34m[1mGenerating C++ code from duckietown_msgs/WheelsCmdDBV2Stamped.msg[0m
+[ 88%] [34m[1mGenerating C++ code from duckietown_msgs/Trajectory.msg[0m
+[ 88%] [34m[1mGenerating Python code from SRV duckietown_msgs/ChangePattern[0m
+[ 88%] [34m[1mGenerating C++ code from duckietown_msgs/LanePose.msg[0m
+[ 89%] [34m[1mGenerating Python code from SRV duckietown_msgs/SetVariable[0m
+[ 90%] [34m[1mGenerating C++ code from duckietown_msgs/MaintenanceState.msg[0m
+[ 90%] [34m[1mGenerating C++ code from duckietown_msgs/Twist2DStamped.msg[0m
+[ 90%] [34m[1mGenerating C++ code from duckietown_msgs/AntiInstagramTransform_CB.msg[0m
+[ 90%] [34m[1mGenerating Python code from SRV duckietown_msgs/SetValue[0m
+[ 91%] [34m[1mGenerating C++ code from duckietown_msgs/TurnIDandType.msg[0m
+[ 91%] [34m[1mGenerating C++ code from duckietown_msgs/Pixel.msg[0m
+[ 91%] [34m[1mGenerating Python msg __init__.py for duckietown_msgs[0m
+[ 91%] [34m[1mGenerating C++ code from duckietown_msgs/Pose2DStamped.msg[0m
+[ 91%] [34m[1mGenerating C++ code from duckietown_msgs/SignalsDetectionETHZ17.msg[0m
+[ 92%] [34m[1mGenerating C++ code from duckietown_msgs/LightSensor.msg[0m
+[ 92%] [34m[1mGenerating Python srv __init__.py for duckietown_msgs[0m
+[ 92%] [34m[1mGenerating C++ code from duckietown_msgs/KinematicsParameters.msg[0m
+[ 92%] [34m[1mGenerating C++ code from duckietown_msgs/IntersectionPoseImgDebug.msg[0m
+[ 92%] [34m[1mGenerating C++ code from duckietown_msgs/SegmentList.msg[0m
+[ 93%] [34m[1mGenerating C++ code from duckietown_msgs/DuckiebotLED.msg[0m
+[ 93%] [34m[1mGenerating C++ code from duckietown_msgs/AprilTagDetectionArray.msg[0m
+[ 93%] [34m[1mGenerating C++ code from duckietown_msgs/ObstacleProjectedDetection.msg[0m
+[ 93%] Built target duckietown_msgs_generate_messages_py
+[ 94%] [34m[1mGenerating C++ code from duckietown_msgs/Rect.msg[0m
+[ 94%] [34m[1mGenerating C++ code from duckietown_msgs/LEDDetection.msg[0m
+[ 94%] [34m[1mGenerating C++ code from duckietown_msgs/ParamTuner.msg[0m
+[ 94%] [34m[1mGenerating C++ code from duckietown_msgs/Rects.msg[0m
+[ 95%] [34m[1mGenerating C++ code from duckietown_msgs/ObstacleImageDetection.msg[0m
+[ 95%] [34m[1mGenerating C++ code from duckietown_msgs/Segment.msg[0m
+[ 95%] [34m[1mGenerating C++ code from duckietown_msgs/TagInfo.msg[0m
+[ 95%] [34m[1mGenerating C++ code from duckietown_msgs/AntiInstagramHealth.msg[0m
+[ 96%] [34m[1mGenerating C++ code from duckietown_msgs/CarControl.msg[0m
+[ 96%] [34m[1mGenerating C++ code from duckietown_msgs/BoolStamped.msg[0m
+[ 96%] [34m[1mGenerating C++ code from duckietown_msgs/SetFSMState.srv[0m
+[ 97%] [34m[1mGenerating C++ code from duckietown_msgs/LFstatus.srv[0m
+[ 97%] [34m[1mGenerating C++ code from duckietown_msgs/SensorsStatus.srv[0m
+[ 97%] [34m[1mGenerating C++ code from duckietown_msgs/SetCustomLEDPattern.srv[0m
+[ 97%] [34m[1mGenerating C++ code from duckietown_msgs/ToFstatus.srv[0m
+[ 98%] [34m[1mGenerating C++ code from duckietown_msgs/GetVariable.srv[0m
+[ 98%] [34m[1mGenerating C++ code from duckietown_msgs/IMUstatus.srv[0m
+[ 98%] [34m[1mGenerating C++ code from duckietown_msgs/ChangePattern.srv[0m
+[ 98%] [34m[1mGenerating C++ code from duckietown_msgs/SetVariable.srv[0m
+[100%] [34m[1mGenerating C++ code from duckietown_msgs/SetValue.srv[0m
+[100%] Built target duckietown_msgs_generate_messages_cpp
+[35m[1mScanning dependencies of target duckietown_msgs_generate_messages[0m
+[100%] Built target duckietown_msgs_generate_messages

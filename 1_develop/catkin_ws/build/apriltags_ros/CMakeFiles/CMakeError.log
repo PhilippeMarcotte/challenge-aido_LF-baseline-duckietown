@@ -1,0 +1,55 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /duckietown/catkin_ws/build/apriltags_ros/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f74be/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f74be.dir/build.make CMakeFiles/cmTC_f74be.dir/build
+make[1]: Entering directory '/duckietown/catkin_ws/build/apriltags_ros/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f74be.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_f74be.dir/CheckSymbolExists.c.o   -c /duckietown/catkin_ws/build/apriltags_ros/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_f74be
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f74be.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_f74be.dir/CheckSymbolExists.c.o  -o cmTC_f74be 
+CMakeFiles/cmTC_f74be.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_f74be.dir/build.make:97: recipe for target 'cmTC_f74be' failed
+make[1]: *** [cmTC_f74be] Error 1
+make[1]: Leaving directory '/duckietown/catkin_ws/build/apriltags_ros/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_f74be/fast' failed
+make: *** [cmTC_f74be/fast] Error 2
+
+File /duckietown/catkin_ws/build/apriltags_ros/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /duckietown/catkin_ws/build/apriltags_ros/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d345a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d345a.dir/build.make CMakeFiles/cmTC_d345a.dir/build
+make[1]: Entering directory '/duckietown/catkin_ws/build/apriltags_ros/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d345a.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_d345a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d345a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d345a.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_d345a.dir/CheckFunctionExists.c.o  -o cmTC_d345a -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_d345a.dir/build.make:97: recipe for target 'cmTC_d345a' failed
+make[1]: *** [cmTC_d345a] Error 1
+make[1]: Leaving directory '/duckietown/catkin_ws/build/apriltags_ros/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_d345a/fast' failed
+make: *** [cmTC_d345a/fast] Error 2
+
+

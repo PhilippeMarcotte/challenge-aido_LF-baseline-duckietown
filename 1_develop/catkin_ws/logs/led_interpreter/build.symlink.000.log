@@ -1,0 +1,4 @@
+Symlinking /duckietown/catkin_ws/devel/share/led_interpreter/cmake/led_interpreterConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/share/led_interpreter/cmake/led_interpreterConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/python2.7/dist-packages/led_interpreter/__init__.py
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/led_interpreter.pc

@@ -1,0 +1,6 @@
+Symlinking /duckietown/catkin_ws/devel/share/vehicle_detection/cmake/vehicle_detectionConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/share/vehicle_detection/cmake/vehicle_detectionConfig.cmake
+Warning: Cannot symlink from /duckietown/catkin_ws/devel/.private/vehicle_detection/lib/python2.7/dist-packages/vehicle_detection/__init__.py to existing file /duckietown/catkin_ws/devel/lib/python2.7/dist-packages/vehicle_detection/__init__.py
+Warning: Source hash: 1821ed30d8e22516ef2ae46dfde0e739
+Warning: Dest hash: b31e27fd83bc3e971138225ee0add91f
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/vehicle_detection.pc

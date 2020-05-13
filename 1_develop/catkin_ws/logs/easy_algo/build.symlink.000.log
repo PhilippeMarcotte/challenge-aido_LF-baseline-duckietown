@@ -1,0 +1,5 @@
+Symlinking /duckietown/catkin_ws/devel/share/easy_algo/cmake/easy_algoConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/share/easy_algo/cmake/easy_algoConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/python2.7/dist-packages/easy_algo_tests/__init__.py
+Symlinking /duckietown/catkin_ws/devel/lib/python2.7/dist-packages/easy_algo/__init__.py
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/easy_algo.pc

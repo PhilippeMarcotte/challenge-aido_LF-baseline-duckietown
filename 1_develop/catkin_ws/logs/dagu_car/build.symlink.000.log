@@ -1,0 +1,4 @@
+Symlinking /duckietown/catkin_ws/devel/share/dagu_car/cmake/dagu_carConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/share/dagu_car/cmake/dagu_carConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/python2.7/dist-packages/dagu_car/__init__.py
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/dagu_car.pc

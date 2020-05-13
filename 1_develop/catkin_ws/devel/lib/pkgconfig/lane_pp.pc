@@ -1,0 +1,1 @@
+/duckietown/catkin_ws/devel/.private/lane_pp/lib/pkgconfig/lane_pp.pc

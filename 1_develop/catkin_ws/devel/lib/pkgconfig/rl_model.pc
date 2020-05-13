@@ -1,0 +1,1 @@
+/duckietown/catkin_ws/devel/.private/rl_model/lib/pkgconfig/rl_model.pc

@@ -1,0 +1,5 @@
+Symlinking /duckietown/catkin_ws/devel/share/easy_logs/cmake/easy_logsConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/share/easy_logs/cmake/easy_logsConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/python2.7/dist-packages/easy_logs_tests/__init__.py
+Symlinking /duckietown/catkin_ws/devel/lib/python2.7/dist-packages/easy_logs/__init__.py
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/easy_logs.pc

@@ -1,0 +1,4 @@
+Symlinking /duckietown/catkin_ws/devel/share/apriltags/cmake/apriltagsConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/share/apriltags/cmake/apriltagsConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/libapriltags.so
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/apriltags.pc

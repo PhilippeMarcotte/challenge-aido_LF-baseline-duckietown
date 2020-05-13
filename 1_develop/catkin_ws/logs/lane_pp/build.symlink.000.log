@@ -1,0 +1,3 @@
+Symlinking /duckietown/catkin_ws/devel/share/lane_pp/cmake/lane_ppConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/share/lane_pp/cmake/lane_ppConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/lane_pp.pc

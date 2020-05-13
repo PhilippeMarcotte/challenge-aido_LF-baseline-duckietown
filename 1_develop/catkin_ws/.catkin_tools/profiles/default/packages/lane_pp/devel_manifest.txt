@@ -1,0 +1,5 @@
+pp/packages/lane_pp
+/duckietown/catkin_ws/devel/.private/lane_pp/cmake.lock /duckietown/catkin_ws/devel/./cmake.lock
+/duckietown/catkin_ws/devel/.private/lane_pp/share/lane_pp/cmake/lane_ppConfig-version.cmake /duckietown/catkin_ws/devel/share/lane_pp/cmake/lane_ppConfig-version.cmake
+/duckietown/catkin_ws/devel/.private/lane_pp/share/lane_pp/cmake/lane_ppConfig.cmake /duckietown/catkin_ws/devel/share/lane_pp/cmake/lane_ppConfig.cmake
+/duckietown/catkin_ws/devel/.private/lane_pp/lib/pkgconfig/lane_pp.pc /duckietown/catkin_ws/devel/lib/pkgconfig/lane_pp.pc

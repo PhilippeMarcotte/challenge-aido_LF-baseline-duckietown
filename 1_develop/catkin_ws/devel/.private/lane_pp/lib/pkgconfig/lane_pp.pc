@@ -1,0 +1,8 @@
+prefix=/duckietown/catkin_ws/devel/.private/lane_pp
+
+Name: lane_pp
+Description: Description of lane_pp
+Version: 1.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

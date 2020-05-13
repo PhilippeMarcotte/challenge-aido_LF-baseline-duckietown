@@ -63,19 +63,14 @@ args = parser.parse_args()
 
 import os
 import subprocess
+import contextlib
 
+@contextlib.contextmanager
 def chdir(path):
-    try:
-        retval = os.getcwd()
-        os.chdir(path)
-        def reset():
-            os.chdir(retval)
-        return reset
-    except:
-        print("Couldn't change dir to `"+path+"`. Currently in `"+retval+"`. Continuing on...")
-        def nope():
-            pass
-        return nope
+    retval = os.getcwd()
+    os.chdir(path)
+    yield None
+    os.chdir(retval)
 
 def call(cmd):
     x = subprocess.check_output(cmd, universal_newlines=True, shell=True)
@@ -85,48 +80,35 @@ def call(cmd):
 
 def _init():
     # From Duckietown: https://docs.duckietown.org/DT19/AIDO/out/embodied_rpl.html
-    ret = chdir("1_develop")
-    call("git submodule init")
-    call("git submodule update")
-    call('git submodule foreach "(git checkout daffy; git pull)"')
+    with chdir("1_develop"):
+        call("git submodule init")
+        call("git submodule update")
+        call('git submodule foreach "(git checkout daffy; git pull)"')
 
-    # We Interrupt Your Regularly Scheduled Programming to Bring You Bufixes
+        # We Interrupt Your Regularly Scheduled Programming to Bring You Bugfixes
 
-    # Docker's latest version broke the `version` flag in docker-compose.yml 2.x, and said flag isn't in 3.x at all.
-    # So now we have to install the nvidia-container-runtime from the source? Not 100% sure what the reason is, but hey.
-    # It works.
-    #
-    # https://nvidia.github.io/nvidia-container-runtime/
-    call("""curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \
-  sudo apt-key add -
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID)""")
-    call("""curl -s -L https://nvidia.github.io/nvidia-container-runtime/$distribution/nvidia-container-runtime.list | \
-  sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list""")
-    call("apt-get update")
+        # Docker's latest version broke the `version` flag in docker-compose.yml 2.x, and said flag isn't in 3.x at all.
+        # So now we have to install the nvidia-container-runtime from the source? Not 100% sure what the reason is, but hey.
+        # It works.
+        #
+        # https://nvidia.github.io/nvidia-container-runtime/
+        call("""curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \
+      sudo apt-key add -
+    distribution=$(. /etc/os-release;echo $ID$VERSION_ID)""")
+        call("""curl -s -L https://nvidia.github.io/nvidia-container-runtime/$distribution/nvidia-container-runtime.list | \
+      sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list""")
+        call("apt-get update")
 
-    # Cont.: https://github.com/NVIDIA/nvidia-container-runtime#docker-engine-setup
-    call("apt-get install nvidia-container-runtime")
-    call("""tee /etc/docker/daemon.json <<EOF
-{
-    "runtimes": {
-        "nvidia": {
-            "path": "/usr/bin/nvidia-container-runtime",
-            "runtimeArgs": []
-        }
-    }
-}
-EOF""")
-    call("pkill -SIGHUP dockerd")
-    call("service docker restart")
+        # Cont.: https://github.com/NVIDIA/nvidia-container-runtime#docker-engine-setup
+        call("apt-get install nvidia-container-runtime -y")
+        call("""echo '{ "runtimes": { "nvidia": { "path": "/usr/bin/nvidia-container-runtime", "runtimeArgs": [] } } }' >> /etc/docker/daemon.json""")
+        call("pkill -SIGHUP dockerd")
+        call("service docker restart")
 
-    # We Return to Your Regularly Scheduled Programming
+        # We Return to Your Regularly Scheduled Programming
 
-    col_print(TRED, "This is going to be VERY LONG and use lots of CPU if it's your first time doing init. Prepare for the long haul.")
-    call("docker-compose up")
-    ret()
-
-def _train():
-
+        col_print(TRED, "This is going to be VERY LONG and use lots of CPU if it's your first time doing init. Prepare for the long haul.")
+        call("docker-compose up")
 
 for script in args.scripts:
     print("Running "); com_print(script); print()

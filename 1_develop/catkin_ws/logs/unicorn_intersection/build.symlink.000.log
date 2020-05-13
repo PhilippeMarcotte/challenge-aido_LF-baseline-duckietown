@@ -1,0 +1,3 @@
+Symlinking /duckietown/catkin_ws/devel/share/unicorn_intersection/cmake/unicorn_intersectionConfig.cmake
+Symlinking /duckietown/catkin_ws/devel/share/unicorn_intersection/cmake/unicorn_intersectionConfig-version.cmake
+Symlinking /duckietown/catkin_ws/devel/lib/pkgconfig/unicorn_intersection.pc
